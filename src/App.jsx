@@ -18,33 +18,34 @@ function App() {
 
   return (
     <MainLayout>
-      {/* Desktop Layout */}
-      <div className="hidden lg:flex h-[calc(100vh-180px)] max-w-[1800px] mx-auto p-4 gap-4">
-        {/* Left Panel - Categories */}
+      {/* Desktop Layout - Redesigned for larger stage preview */}
+      <div className="hidden lg:grid h-[calc(100vh-160px)] max-w-[1920px] mx-auto p-3 gap-3" 
+           style={{ gridTemplateColumns: '280px 1fr 300px' }}>
+        {/* Left Panel - Categories (narrower) */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="w-[320px] flex-shrink-0"
+          className="overflow-hidden"
         >
           <CategorySidebar />
         </motion.div>
 
-        {/* Center Panel - Stage Preview */}
+        {/* Center Panel - Stage Preview (MUCH LARGER) */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex-1 min-w-0"
+          className="min-w-0 h-full"
         >
           <StagePreview />
         </motion.div>
 
-        {/* Right Panel - Quote Summary */}
+        {/* Right Panel - Quote Summary (narrower) */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="w-[340px] flex-shrink-0"
+          className="overflow-hidden"
         >
           <QuoteSummary />
         </motion.div>

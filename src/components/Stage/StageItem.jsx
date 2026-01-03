@@ -16,6 +16,71 @@ export const StageItem = memo(function StageItem({ item, instanceIndex = 0, tota
   );
 });
 
+// ============================================
+// REALISTIC ROSE COMPONENT - Reusable
+// ============================================
+function RealisticRose({ x, y, size = 1, color = '#FEFEFE', opacity = 1 }) {
+  const scale = size;
+  return (
+    <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
+      {/* Outer petals - layered */}
+      <path
+        d="M0,0 Q-3,-2 -4,2 Q-3,4 0,3 Q3,4 4,2 Q3,-2 0,0"
+        fill={color}
+        opacity="0.95"
+      />
+      <path
+        d="M0,0 Q-2.5,-1.5 -3.5,1.5 Q-2.5,3.5 0,2.5 Q2.5,3.5 3.5,1.5 Q2.5,-1.5 0,0"
+        fill={color === '#FEFEFE' ? '#FAF8F5' : color}
+        opacity="0.9"
+      />
+      {/* Center petals */}
+      <ellipse cx="0" cy="0.5" rx="1.5" ry="2" fill={color === '#FEFEFE' ? '#F5F0EA' : color} opacity="0.85" />
+      <ellipse cx="-0.8" cy="0.3" rx="1" ry="1.5" fill={color === '#FEFEFE' ? '#F0EBE3' : color} opacity="0.8" />
+      <ellipse cx="0.8" cy="0.3" rx="1" ry="1.5" fill={color === '#FEFEFE' ? '#F0EBE3' : color} opacity="0.8" />
+      {/* Center */}
+      <circle cx="0" cy="0.5" r="0.6" fill={color === '#FEFEFE' ? '#EDE5DB' : '#D4A5A5'} />
+    </g>
+  );
+}
+
+function RealisticBlushRose({ x, y, size = 1, opacity = 1 }) {
+  const scale = size;
+  return (
+    <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
+      <path
+        d="M0,0 Q-3,-2 -4,2 Q-3,4 0,3 Q3,4 4,2 Q3,-2 0,0"
+        fill="#F5E0DD"
+        opacity="0.95"
+      />
+      <path
+        d="M0,0 Q-2.5,-1.5 -3.5,1.5 Q-2.5,3.5 0,2.5 Q2.5,3.5 3.5,1.5 Q2.5,-1.5 0,0"
+        fill="#F0D5D0"
+        opacity="0.9"
+      />
+      <ellipse cx="0" cy="0.5" rx="1.5" ry="2" fill="#E8C5C0" opacity="0.85" />
+      <circle cx="0" cy="0.5" r="0.6" fill="#D4A5A5" />
+    </g>
+  );
+}
+
+function RealisticLeaf({ x, y, angle = 0, size = 1 }) {
+  return (
+    <g transform={`translate(${x}, ${y}) rotate(${angle}) scale(${size})`}>
+      <path
+        d="M0,0 Q-1.5,2 -1,4 Q0,5 1,4 Q1.5,2 0,0"
+        fill="#4A6F3B"
+        opacity="0.4"
+      />
+      <path
+        d="M0,0 Q-1,1.5 -0.7,3 Q0,3.5 0.7,3 Q1,1.5 0,0"
+        fill="#5A7F4B"
+        opacity="0.3"
+      />
+    </g>
+  );
+}
+
 // Enhanced SVG components for stage visualization
 function StageSVG({ itemId, color, instanceIndex, totalInstances }) {
   // BACKDROPS
@@ -24,7 +89,7 @@ function StageSVG({ itemId, color, instanceIndex, totalInstances }) {
   if (itemId === 'backdrop-sequin-gold') return <SequinBackdrop color="#D4AF37" />;
   if (itemId === 'backdrop-black-draping') return <WhiteDrapingBackdrop color="#1a1a1a" />;
   
-  // ARCHES - Now with florals!
+  // ARCHES - Realistic with proper florals
   if (itemId === 'arch-circular-single') return <FloralArch />;
   if (itemId === 'arch-triple-set') return <TripleFloralArch />;
   if (itemId === 'arch-hexagon') return <HexagonArch />;
@@ -36,7 +101,7 @@ function StageSVG({ itemId, color, instanceIndex, totalInstances }) {
   if (itemId === 'chairs-accent-pair') return <ElegantAccentChair side={instanceIndex === 0 ? 'left' : 'right'} />;
   if (itemId === 'cushions-floor-set') return <FloorCushions />;
   
-  // FLORALS - Much more lush!
+  // FLORALS - Realistic arrangements
   if (itemId === 'floral-arch-arrangement') return <LushArchFlorals />;
   if (itemId === 'floral-sofa-wrap') return <SofaFloralWrap side={instanceIndex === 0 ? 'left' : 'right'} />;
   if (itemId === 'floral-aisle-boxes') return <AisleFloralBox index={instanceIndex} />;
@@ -63,7 +128,7 @@ function StageSVG({ itemId, color, instanceIndex, totalInstances }) {
 }
 
 // ============================================
-// BACKDROP COMPONENTS - More realistic
+// BACKDROP COMPONENTS
 // ============================================
 
 function WhiteDrapingBackdrop({ color = '#FAFAFA' }) {
@@ -86,7 +151,6 @@ function WhiteDrapingBackdrop({ color = '#FAFAFA' }) {
         </filter>
       </defs>
       
-      {/* Main drape body */}
       <rect x="0" y="0" width="200" height="100" fill="url(#drapeGradLight)" />
       
       {/* Gathered swag at top */}
@@ -96,17 +160,15 @@ function WhiteDrapingBackdrop({ color = '#FAFAFA' }) {
         opacity="0.9"
       />
       
-      {/* Multiple drape folds for realism */}
+      {/* Drape folds */}
       {[12, 28, 44, 60, 76, 92, 108, 124, 140, 156, 172, 188].map((x, i) => (
         <g key={i}>
-          {/* Shadow fold */}
           <path
             d={`M${x} 18 Q${x + 3} 50, ${x + 1} 100`}
             stroke={isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.03)'}
             strokeWidth="10"
             fill="none"
           />
-          {/* Highlight fold */}
           <path
             d={`M${x - 4} 18 Q${x - 2} 50, ${x - 4} 100`}
             stroke={isLight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.05)'}
@@ -116,20 +178,17 @@ function WhiteDrapingBackdrop({ color = '#FAFAFA' }) {
         </g>
       ))}
       
-      {/* Bottom pooling effect */}
       <ellipse cx="100" cy="98" rx="95" ry="4" fill={isLight ? 'rgba(0,0,0,0.03)' : 'rgba(0,0,0,0.2)'} />
     </svg>
   );
 }
 
 function FairyLightBackdrop() {
-  // Create random but consistent light positions
   const lights = [];
   for (let row = 0; row < 12; row++) {
     for (let col = 0; col < 20; col++) {
       const baseX = col * 10 + 5;
       const baseY = row * 8 + 4;
-      // Add slight randomness
       const offsetX = (Math.sin(row * col) * 2);
       const offsetY = (Math.cos(row + col) * 2);
       const brightness = 0.4 + Math.abs(Math.sin(row * 0.5 + col * 0.3)) * 0.6;
@@ -159,13 +218,9 @@ function FairyLightBackdrop() {
         </linearGradient>
       </defs>
       
-      {/* Dark curtain base */}
       <rect x="0" y="0" width="200" height="100" fill="url(#curtainBase)" />
-      
-      {/* Sheer curtain layer */}
       <rect x="0" y="0" width="200" height="100" fill="#F5F0E6" opacity="0.08" />
       
-      {/* Vertical string lines */}
       {Array.from({ length: 20 }).map((_, i) => (
         <line
           key={`string-${i}`}
@@ -179,10 +234,8 @@ function FairyLightBackdrop() {
         />
       ))}
       
-      {/* Fairy lights with glow */}
       {lights.map((light, i) => (
         <g key={i}>
-          {/* Outer glow */}
           <circle 
             cx={light.x} 
             cy={light.y} 
@@ -190,7 +243,6 @@ function FairyLightBackdrop() {
             fill="url(#warmLight)" 
             opacity={light.brightness * 0.6}
           />
-          {/* Core light */}
           <circle 
             cx={light.x} 
             cy={light.y} 
@@ -202,7 +254,6 @@ function FairyLightBackdrop() {
         </g>
       ))}
       
-      {/* Ambient glow overlay */}
       <rect x="0" y="0" width="200" height="100" fill="#FFE4B5" opacity="0.05" />
     </svg>
   );
@@ -224,7 +275,6 @@ function SequinBackdrop({ color = '#D4AF37' }) {
       
       <rect x="0" y="0" width="200" height="100" fill="url(#sequinBase)" />
       
-      {/* Dense sequin pattern */}
       {Array.from({ length: 50 }).map((_, row) =>
         Array.from({ length: 50 }).map((_, col) => {
           const shimmer = Math.sin(row * 0.8 + col * 0.5) * 0.5 + 0.5;
@@ -247,7 +297,7 @@ function SequinBackdrop({ color = '#D4AF37' }) {
 }
 
 // ============================================
-// ARCH COMPONENTS - With lush florals!
+// ARCH COMPONENTS - Realistic with proper roses
 // ============================================
 
 function FloralArch() {
@@ -267,64 +317,57 @@ function FloralArch() {
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
+        <filter id="archShadow">
+          <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.2"/>
+        </filter>
       </defs>
       
-      {/* Elegant gold arch frame */}
+      {/* Elegant gold arch frame with depth */}
       <path
         d="M15 128 L15 55 Q15 12, 50 12 Q85 12, 85 55 L85 128"
         stroke="url(#archGold)"
-        strokeWidth="2.5"
+        strokeWidth="3"
         fill="none"
-        opacity="0.9"
+        opacity="0.95"
         filter="url(#archGlow)"
       />
       
-      {/* Inner highlight line */}
+      {/* Inner highlight for dimension */}
       <path
         d="M17 126 L17 56 Q17 14, 50 14 Q83 14, 83 56 L83 126"
         stroke="#F4E4BA"
-        strokeWidth="1"
+        strokeWidth="1.5"
         fill="none"
-        opacity="0.4"
+        opacity="0.5"
       />
       
-      {/* Elegant floral clusters - realistic roses, not green blobs */}
-      {/* Top center cluster */}
-      <g>
-        <circle cx={50} cy={18} r={6} fill="#FEFEFE" opacity="0.95" />
-        <circle cx={50} cy={18} r={4} fill="#FAF8F5" />
-        <circle cx={50} cy={18} r={2.5} fill="#F5F0EA" />
-        <circle cx={48} cy={16} r={4} fill="#FEFEFE" opacity="0.9" />
-        <circle cx={52} cy={16} r={4} fill="#FEFEFE" opacity="0.9" />
-      </g>
+      {/* Realistic roses - top center */}
+      <RealisticRose x={50} y={18} size={5} />
+      <RealisticRose x={46} y={16} size={4} />
+      <RealisticRose x={54} y={16} size={4} />
       
-      {/* Side clusters - cascading */}
+      {/* Cascading roses down the sides */}
       {[[22, 35], [78, 35], [18, 55], [82, 55], [20, 75], [80, 75], [22, 95], [78, 95]].map(([x, y], i) => (
-        <g key={`cluster-${i}`}>
-          <circle cx={x} cy={y} r={4.5} fill="#FEFEFE" opacity="0.9" />
-          <circle cx={x} cy={y} r={3} fill="#FAF8F5" />
-          <circle cx={x + 2} cy={y - 1} r={3.5} fill="#FEFEFE" opacity="0.85" />
-          <circle cx={x - 2} cy={y - 1} r={3.5} fill="#FEFEFE" opacity="0.85" />
+        <g key={`rose-${i}`}>
+          <RealisticRose x={x} y={y} size={4} />
+          <RealisticRose x={x + 2} y={y - 1} size={3.5} opacity={0.85} />
+          <RealisticRose x={x - 2} y={y - 1} size={3.5} opacity={0.85} />
         </g>
       ))}
       
-      {/* Subtle greenery accents - small, elegant leaves */}
-      {[[16, 50], [84, 50], [17, 70], [83, 70], [19, 90], [81, 90]].map(([x, y], i) => (
-        <ellipse 
-          key={`leaf-${i}`} 
-          cx={x} 
-          cy={y} 
-          rx={2} 
-          ry={4} 
-          fill="#4A6F3B" 
-          opacity="0.3"
-          transform={`rotate(${i * 30}, ${x}, ${y})`}
-        />
+      {/* Blush roses for variety */}
+      {[[25, 30], [75, 30], [30, 50], [70, 50]].map(([x, y], i) => (
+        <RealisticBlushRose key={`blush-${i}`} x={x} y={y} size={3.5} />
       ))}
       
-      {/* Baby's breath accents */}
+      {/* Elegant leaves */}
+      {[[16, 50], [84, 50], [17, 70], [83, 70], [19, 90], [81, 90]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 30} size={1.2} />
+      ))}
+      
+      {/* Baby's breath */}
       {[[25, 25], [75, 25], [30, 45], [70, 45], [25, 65], [75, 65], [28, 85], [72, 85]].map(([x, y], i) => (
-        <circle key={`breath-${i}`} cx={x} cy={y} r={1.5} fill="#FFFFFF" opacity="0.6" />
+        <circle key={`breath-${i}`} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.6" />
       ))}
     </svg>
   );
@@ -349,72 +392,47 @@ function TripleFloralArch() {
         </filter>
       </defs>
       
-      {/* Three elegant gold arch frames */}
-      <path d="M10 108 L10 45 Q10 8, 80 8 Q150 8, 150 45 L150 108" stroke="url(#archGoldTriple)" strokeWidth="2" fill="none" opacity="0.7" filter="url(#tripleGlow)" />
-      <path d="M25 108 L25 48 Q25 15, 80 15 Q135 15, 135 48 L135 108" stroke="url(#archGoldTriple)" strokeWidth="2.5" fill="none" opacity="0.8" filter="url(#tripleGlow)" />
-      <path d="M40 108 L40 50 Q40 22, 80 22 Q120 22, 120 50 L120 108" stroke="url(#archGoldTriple)" strokeWidth="3" fill="none" opacity="0.9" filter="url(#tripleGlow)" />
+      {/* Three elegant gold arch frames with depth */}
+      <path d="M10 108 L10 45 Q10 8, 80 8 Q150 8, 150 45 L150 108" stroke="url(#archGoldTriple)" strokeWidth="2.5" fill="none" opacity="0.8" filter="url(#tripleGlow)" />
+      <path d="M25 108 L25 48 Q25 15, 80 15 Q135 15, 135 48 L135 108" stroke="url(#archGoldTriple)" strokeWidth="3" fill="none" opacity="0.85" filter="url(#tripleGlow)" />
+      <path d="M40 108 L40 50 Q40 22, 80 22 Q120 22, 120 50 L120 108" stroke="url(#archGoldTriple)" strokeWidth="3.5" fill="none" opacity="0.9" filter="url(#tripleGlow)" />
       
-      {/* Elegant floral clusters - no green blobs */}
-      {/* Top center cluster */}
-      <g>
-        <circle cx={80} cy={12} r={7} fill="#FEFEFE" opacity="0.95" />
-        <circle cx={80} cy={12} r={5} fill="#FAF8F5" />
-        <circle cx={80} cy={12} r={3} fill="#F5F0EA" />
-        <circle cx={77} cy={10} r={5} fill="#FEFEFE" opacity="0.9" />
-        <circle cx={83} cy={10} r={5} fill="#FEFEFE" opacity="0.9" />
-      </g>
+      {/* Realistic rose clusters - top center */}
+      <RealisticRose x={80} y={12} size={6} />
+      <RealisticRose x={76} y={10} size={5} />
+      <RealisticRose x={84} y={10} size={5} />
       
-      {/* Side clusters on outer arch */}
+      {/* Outer arch roses */}
       {[[15, 30], [145, 30], [12, 50], [148, 50], [15, 70], [145, 70], [18, 90], [142, 90]].map(([x, y], i) => (
-        <g key={`outer-cluster-${i}`}>
-          <circle cx={x} cy={y} r={5} fill="#FEFEFE" opacity="0.9" />
-          <circle cx={x} cy={y} r={3.5} fill="#FAF8F5" />
-          <circle cx={x + 2} cy={y - 1} r={4} fill="#FEFEFE" opacity="0.85" />
+        <g key={`outer-${i}`}>
+          <RealisticRose x={x} y={y} size={4.5} />
+          <RealisticRose x={x + 2} y={y - 1} size={4} opacity={0.85} />
         </g>
       ))}
       
-      {/* Middle arch clusters */}
+      {/* Middle arch roses */}
       {[[30, 35], [130, 35], [28, 55], [132, 55], [30, 75], [130, 75]].map(([x, y], i) => (
-        <g key={`mid-cluster-${i}`}>
-          <circle cx={x} cy={y} r={4.5} fill="#FEFEFE" opacity="0.9" />
-          <circle cx={x} cy={y} r={3} fill="#FAF8F5" />
-          <circle cx={x + 1.5} cy={y - 1} r={3.5} fill="#FEFEFE" opacity="0.85" />
-        </g>
+        <RealisticRose key={`mid-${i}`} x={x} y={y} size={4} />
       ))}
       
-      {/* Inner arch clusters */}
+      {/* Inner arch roses */}
       {[[45, 40], [115, 40], [42, 60], [118, 60], [45, 80], [115, 80]].map(([x, y], i) => (
-        <g key={`inner-cluster-${i}`}>
-          <circle cx={x} cy={y} r={4} fill="#FEFEFE" opacity="0.95" />
-          <circle cx={x} cy={y} r={2.5} fill="#FAF8F5" />
-        </g>
+        <RealisticRose key={`inner-${i}`} x={x} y={y} size={3.5} />
       ))}
       
-      {/* Blush accent roses */}
+      {/* Blush roses */}
       {[[20, 45], [140, 45], [55, 25], [105, 25], [35, 65], [125, 65], [40, 85], [120, 85]].map(([x, y], i) => (
-        <g key={`blush-${i}`}>
-          <circle cx={x} cy={y} r={3.5} fill="#F5E0DD" opacity="0.9" />
-          <circle cx={x} cy={y} r={2.5} fill="#F0D5D0" />
-        </g>
+        <RealisticBlushRose key={`blush-${i}`} x={x} y={y} size={3} />
       ))}
       
-      {/* Subtle greenery accents - tiny elegant leaves */}
+      {/* Elegant leaves */}
       {[[18, 55], [142, 55], [32, 70], [128, 70], [38, 88], [122, 88]].map(([x, y], i) => (
-        <ellipse 
-          key={`leaf-${i}`} 
-          cx={x} 
-          cy={y} 
-          rx={1.5} 
-          ry={3} 
-          fill="#4A6F3B" 
-          opacity="0.25"
-          transform={`rotate(${i * 25}, ${x}, ${y})`}
-        />
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 25} size={1} />
       ))}
       
       {/* Baby's breath */}
       {[[25, 20], [135, 20], [22, 40], [138, 40], [28, 60], [132, 60], [30, 80], [130, 80]].map(([x, y], i) => (
-        <circle key={`breath-${i}`} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.5" />
+        <circle key={`breath-${i}`} cx={x} cy={y} r={1} fill="#FFFFFF" opacity="0.5" />
       ))}
     </svg>
   );
@@ -439,36 +457,34 @@ function HexagonArch() {
         </filter>
       </defs>
       
-      {/* Hexagon frame - elegant gold */}
+      {/* Hexagon frame */}
       <polygon
         points="50,8 88,28 88,78 50,98 12,78 12,28"
         stroke="url(#hexGold)"
-        strokeWidth="3.5"
+        strokeWidth="4"
         fill="none"
         strokeLinejoin="round"
         filter="url(#hexGlow)"
         opacity="0.9"
       />
       
-      {/* Elegant floral clusters at corners - NO green blobs */}
+      {/* Realistic roses at corners */}
       {[[12, 28], [12, 53], [12, 78], [50, 8], [88, 28], [88, 53], [88, 78], [50, 98]].map(([x, y], i) => (
         <g key={i}>
-          <circle cx={x} cy={y} r={4} fill="#FEFEFE" opacity="0.9" />
-          <circle cx={x} cy={y} r={2.5} fill="#FAF8F5" />
+          <RealisticRose x={x} y={y} size={3.5} />
           {i % 2 === 0 && (
-            <circle cx={x + (x < 50 ? 2 : -2)} cy={y} r={3} fill="#FEFEFE" opacity="0.85" />
+            <RealisticRose x={x + (x < 50 ? 2 : -2)} y={y} size={3} opacity={0.85} />
           )}
         </g>
       ))}
       
-      {/* Top center floral */}
-      <g>
-        <circle cx={50} cy={8} r={5} fill="#FEFEFE" opacity="0.95" />
-        <circle cx={50} cy={8} r={3.5} fill="#FAF8F5" />
-      </g>
+      {/* Top center */}
+      <RealisticRose x={50} y={8} size={4.5} />
+      <RealisticRose x={48} y={6} size={3.5} />
+      <RealisticRose x={52} y={6} size={3.5} />
       
-      {/* Bottom center accent */}
-      <circle cx={50} cy={98} r={3.5} fill="#F5E6E0" opacity="0.9" />
+      {/* Bottom center */}
+      <RealisticBlushRose x={50} y={98} size={3.5} />
     </svg>
   );
 }
@@ -479,31 +495,36 @@ function RectangleArch() {
       <defs>
         <linearGradient id="rectGold" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#B8962E" />
-          <stop offset="50%" stopColor="#D4AF37" />
+          <stop offset="30%" stopColor="#D4AF37" />
+          <stop offset="70%" stopColor="#F4E4BA" />
           <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
+        <filter id="rectGlow">
+          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
       
       {/* Rectangle frame */}
-      <rect x="10" y="8" width="80" height="100" stroke="url(#rectGold)" strokeWidth="4" fill="none" rx="2" />
+      <rect x="10" y="8" width="80" height="100" stroke="url(#rectGold)" strokeWidth="3.5" fill="none" rx="2" filter="url(#rectGlow)" opacity="0.9" />
       
-      {/* Elegant floral clusters along frame - NO green blobs */}
+      {/* Realistic roses along frame */}
       {[0, 20, 40, 60, 80].map((y, i) => (
         <g key={i}>
-          {/* Left side florals */}
-          <circle cx={12} cy={15 + y} r={4} fill="#FEFEFE" opacity="0.9" />
-          <circle cx={12} cy={15 + y} r={2.5} fill="#FAF8F5" />
-          {/* Right side florals */}
-          <circle cx={88} cy={15 + y} r={4} fill="#FEFEFE" opacity="0.9" />
-          <circle cx={88} cy={15 + y} r={2.5} fill="#FAF8F5" />
+          <RealisticRose x={12} y={15 + y} size={3.5} />
+          <RealisticRose x={88} y={15 + y} size={3.5} />
         </g>
       ))}
       
       {/* Top florals */}
       {[25, 50, 75].map((x, i) => (
         <g key={i}>
-          <circle cx={x} cy={10} r={4} fill="#FEFEFE" />
-          <circle cx={x} cy={10} r={2.5} fill="#F8F5F0" />
+          <RealisticRose x={x} y={10} size={4} />
+          <RealisticRose x={x - 1.5} y={8} size={3} opacity={0.9} />
+          <RealisticRose x={x + 1.5} y={8} size={3} opacity={0.9} />
         </g>
       ))}
     </svg>
@@ -511,7 +532,7 @@ function RectangleArch() {
 }
 
 // ============================================
-// SEATING - Luxury tufted sofas
+// SEATING - Enhanced luxury sofas
 // ============================================
 
 function LuxuryTuftedSofa({ color = '#F5F0E6' }) {
@@ -528,59 +549,55 @@ function LuxuryTuftedSofa({ color = '#F5F0E6' }) {
         <filter id="sofaShadow">
           <feDropShadow dx="0" dy="3" stdDeviation="4" floodOpacity="0.25"/>
         </filter>
-        <filter id="innerShadow">
-          <feOffset dx="0" dy="1"/>
-          <feGaussianBlur stdDeviation="1"/>
-          <feComposite operator="out" in="SourceGraphic"/>
-          <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0"/>
-          <feBlend in="SourceGraphic"/>
+        <filter id="sofaDepth">
+          <feGaussianBlur stdDeviation="0.5"/>
         </filter>
       </defs>
       
-      {/* Sofa shadow */}
-      <ellipse cx="74" cy="58" rx="60" ry="4" fill="rgba(0,0,0,0.15)" />
+      {/* Shadow */}
+      <ellipse cx="74" cy="58" rx="62" ry="4" fill="rgba(0,0,0,0.2)" />
       
-      {/* Back rest - tall and tufted */}
-      <rect x="12" y="5" width="116" height="28" rx="6" fill="url(#sofaCushion)" filter="url(#sofaShadow)" />
+      {/* Back rest - with proper perspective */}
+      <rect x="10" y="4" width="128" height="30" rx="7" fill="url(#sofaCushion)" filter="url(#sofaShadow)" />
       
-      {/* Channel tufting on back - vertical pleats */}
-      {[24, 38, 52, 66, 80, 94, 108].map((x, i) => (
+      {/* Channel tufting - realistic depth */}
+      {[26, 40, 54, 68, 82, 96, 110].map((x, i) => (
         <g key={`tuft-${i}`}>
-          {/* Vertical channel line */}
-          <line x1={x} y1="8" x2={x} y2="30" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" />
-          {/* Button */}
-          <circle cx={x} cy="19" r="1.8" fill="rgba(0,0,0,0.08)" />
+          <line x1={x} y1="6" x2={x} y2="32" stroke="rgba(0,0,0,0.08)" strokeWidth="2" />
+          <circle cx={x} cy="19" r="2.2" fill="rgba(0,0,0,0.1)" />
+          {/* Highlight */}
+          <line x1={x - 0.5} y1="6" x2={x - 0.5} y2="32" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
         </g>
       ))}
       
-      {/* Back cushion highlight */}
-      <rect x="14" y="7" width="112" height="5" rx="2.5" fill="rgba(255,255,255,0.4)" />
+      {/* Top highlight */}
+      <rect x="12" y="6" width="124" height="6" rx="3" fill="rgba(255,255,255,0.5)" />
       
       {/* Seat cushion */}
-      <rect x="12" y="30" width="116" height="18" rx="5" fill={color} />
-      <rect x="14" y="32" width="112" height="3" rx="1.5" fill="rgba(255,255,255,0.3)" />
+      <rect x="10" y="30" width="128" height="20" rx="6" fill={color} />
+      <rect x="12" y="32" width="124" height="4" rx="2" fill="rgba(255,255,255,0.4)" />
       
-      {/* Seat tufting - 3 sections */}
-      <line x1="52" y1="33" x2="52" y2="45" stroke="rgba(0,0,0,0.05)" strokeWidth="1.5" />
-      <line x1="88" y1="33" x2="88" y2="45" stroke="rgba(0,0,0,0.05)" strokeWidth="1.5" />
+      {/* Seat tufting */}
+      <line x1="54" y1="33" x2="54" y2="47" stroke="rgba(0,0,0,0.06)" strokeWidth="2" />
+      <line x1="94" y1="33" x2="94" y2="47" stroke="rgba(0,0,0,0.06)" strokeWidth="2" />
       
-      {/* Rounded arms - fixed to fit within viewBox */}
-      <path d="M4 12 Q4 8, 12 8 L12 42 Q4 42, 4 36 Z" fill={color} />
-      <path d="M136 8 Q144 8, 144 12 L144 36 Q144 42, 136 42 Z" fill={color} />
+      {/* Rounded arms - properly sized */}
+      <path d="M2 14 Q2 8, 10 8 L10 46 Q2 46, 2 38 Z" fill={color} />
+      <path d="M138 8 Q146 8, 146 14 L146 38 Q146 46, 138 46 Z" fill={color} />
       
       {/* Arm highlights */}
-      <path d="M6 14 Q6 10, 12 10 L12 14 Z" fill="rgba(255,255,255,0.35)" />
-      <path d="M136 10 Q142 10, 142 14 L136 14 Z" fill="rgba(255,255,255,0.35)" />
+      <path d="M4 16 Q4 10, 10 10 L10 14 Z" fill="rgba(255,255,255,0.4)" />
+      <path d="M138 10 Q144 10, 144 14 L138 14 Z" fill="rgba(255,255,255,0.4)" />
       
-      {/* Gold legs */}
-      <ellipse cx="25" cy="52" rx="4" ry="2.5" fill="#D4AF37" />
-      <rect x="23" y="50" width="4" height="6" fill="#D4AF37" />
-      <ellipse cx="123" cy="52" rx="4" ry="2.5" fill="#D4AF37" />
-      <rect x="121" y="50" width="4" height="6" fill="#D4AF37" />
+      {/* Gold legs - properly positioned */}
+      <ellipse cx="27" cy="52" rx="4.5" ry="3" fill="#D4AF37" />
+      <rect x="24.5" y="50" width="5" height="7" fill="#D4AF37" rx="1" />
+      <ellipse cx="121" cy="52" rx="4.5" ry="3" fill="#D4AF37" />
+      <rect x="118.5" y="50" width="5" height="7" fill="#D4AF37" rx="1" />
       
       {/* Leg highlights */}
-      <ellipse cx="24" cy="51" rx="1.5" ry="1" fill="#F4E4BA" opacity="0.6" />
-      <ellipse cx="122" cy="51" rx="1.5" ry="1" fill="#F4E4BA" opacity="0.6" />
+      <ellipse cx="26" cy="51" rx="2" ry="1.2" fill="#F4E4BA" opacity="0.7" />
+      <ellipse cx="120" cy="51" rx="2" ry="1.2" fill="#F4E4BA" opacity="0.7" />
     </svg>
   );
 }
@@ -598,28 +615,28 @@ function ElegantAccentChair({ side }) {
       </defs>
       
       {/* Shadow */}
-      <ellipse cx="27" cy="62" rx="20" ry="3" fill="rgba(0,0,0,0.12)" />
+      <ellipse cx="27" cy="62" rx="22" ry="3" fill="rgba(0,0,0,0.15)" />
       
-      {/* Chair back - curved */}
-      <path d="M8 8 Q27 3, 46 8 L44 35 Q27 38, 10 35 Z" fill="url(#chairFabric)" />
+      {/* Chair back - curved with depth */}
+      <path d="M6 6 Q27 2, 48 6 L46 36 Q27 39, 8 36 Z" fill="url(#chairFabric)" />
       
       {/* Back tufting */}
-      <circle cx="20" cy="18" r="1.5" fill="rgba(0,0,0,0.06)" />
-      <circle cx="34" cy="18" r="1.5" fill="rgba(0,0,0,0.06)" />
-      <circle cx="27" cy="26" r="1.5" fill="rgba(0,0,0,0.06)" />
+      <circle cx="18" cy="16" r="1.8" fill="rgba(0,0,0,0.08)" />
+      <circle cx="36" cy="16" r="1.8" fill="rgba(0,0,0,0.08)" />
+      <circle cx="27" cy="24" r="1.8" fill="rgba(0,0,0,0.08)" />
       
       {/* Seat */}
-      <ellipse cx="27" cy="40" rx="22" ry="8" fill="#F5F0E6" />
-      <ellipse cx="27" cy="38" rx="18" ry="5" fill="rgba(255,255,255,0.3)" />
+      <ellipse cx="27" cy="42" rx="24" ry="9" fill="#F5F0E6" />
+      <ellipse cx="27" cy="40" rx="20} ry="6" fill="rgba(255,255,255,0.4)" />
       
-      {/* Arm (one side visible) */}
-      <path d="M3 15 Q0 15, 0 20 L0 42 Q0 45, 5 45 L8 35 L8 15 Z" fill="#F5F0E6" />
+      {/* Arm */}
+      <path d="M1 13 Q-1 13, -1 18 L-1 44 Q-1 47, 4 47 L6 36 L6 13 Z" fill="#F5F0E6" />
       
       {/* Gold legs */}
-      <rect x="12" y="48" width="3" height="12" fill="#D4AF37" rx="1" />
-      <rect x="38" y="48" width="3" height="12" fill="#D4AF37" rx="1" />
-      <ellipse cx="13.5" cy="60" rx="2" ry="1" fill="#B8962E" />
-      <ellipse cx="39.5" cy="60" rx="2" ry="1" fill="#B8962E" />
+      <rect x="10" y="48" width="3.5" height="14" fill="#D4AF37" rx="1" />
+      <rect x="40" y="48" width="3.5" height="14" fill="#D4AF37" rx="1" />
+      <ellipse cx="11.75" cy="60" rx="2.5" ry="1.5" fill="#B8962E" />
+      <ellipse cx="41.75" cy="60" rx="2.5" ry="1.5" fill="#B8962E" />
     </svg>
   );
 }
@@ -647,7 +664,7 @@ function FloorCushions() {
 }
 
 // ============================================
-// FLORALS - Lush and abundant!
+// FLORALS - Realistic arrangements
 // ============================================
 
 function LushArchFlorals() {
@@ -659,48 +676,48 @@ function LushArchFlorals() {
         </filter>
       </defs>
       
-      {/* NO green blobs - just elegant florals */}
-      
-      {/* Large white roses - main focal points */}
+      {/* Realistic rose clusters - NO green blobs */}
       <g filter="url(#floralDepth)">
+        {/* Large focal roses */}
         {[[90, 25], [70, 30], [110, 30], [50, 38], [130, 38], [90, 40]].map(([x, y], i) => (
           <g key={`large-${i}`}>
-            <circle cx={x} cy={y} r={12} fill="#FEFEFE" />
-            <circle cx={x} cy={y} r={9} fill="#FAF8F5" />
-            <circle cx={x} cy={y} r={6} fill="#F5F0EA" />
-            <circle cx={x} cy={y} r={3} fill="#EDE5DB" />
+            <RealisticRose x={x} y={y} size={6} />
+            <RealisticRose x={x - 3} y={y - 2} size={5} opacity={0.9} />
+            <RealisticRose x={x + 3} y={y - 2} size={5} opacity={0.9} />
+            <RealisticRose x={x - 2} y={y + 2} size={4.5} opacity={0.85} />
+            <RealisticRose x={x + 2} y={y + 2} size={4.5} opacity={0.85} />
           </g>
         ))}
       </g>
       
-      {/* Medium white roses */}
+      {/* Medium roses */}
       {[[60, 22], [120, 22], [40, 45], [140, 45], [75, 50], [105, 50]].map(([x, y], i) => (
         <g key={`med-${i}`}>
-          <circle cx={x} cy={y} r={8} fill="#FEFEFE" />
-          <circle cx={x} cy={y} r={5.5} fill="#F8F5F0" />
-          <circle cx={x} cy={y} r={3} fill="#F0EBE3" />
+          <RealisticRose x={x} y={y} size={4.5} />
+          <RealisticRose x={x + 2} y={y - 1} size={4} opacity={0.9} />
         </g>
       ))}
       
-      {/* Blush/pink accent roses */}
+      {/* Blush roses */}
       {[[80, 35], [100, 35], [55, 28], [125, 28], [35, 50], [145, 50], [65, 55], [115, 55]].map(([x, y], i) => (
-        <g key={`blush-${i}`}>
-          <circle cx={x} cy={y} r={6} fill="#F5E0DD" />
-          <circle cx={x} cy={y} r={4} fill="#F0D5D0" />
-          <circle cx={x} cy={y} r={2} fill="#E8C5C0" />
-        </g>
+        <RealisticBlushRose key={`blush-${i}`} x={x} y={y} size={3.5} />
       ))}
       
-      {/* Small filler flowers */}
+      {/* Small filler roses */}
       {[[45, 35], [135, 35], [30, 55], [150, 55], [85, 55], [95, 55], [70, 60], [110, 60]].map(([x, y], i) => (
-        <circle key={`small-${i}`} cx={x} cy={y} r={4} fill="#FFF8F5" opacity="0.9" />
+        <RealisticRose key={`small-${i}`} x={x} y={y} size={2.5} opacity={0.9} />
       ))}
       
-      {/* Baby's breath accent dots */}
+      {/* Elegant leaves scattered */}
+      {[[55, 40], [125, 40], [45, 50], [135, 50], [35, 58], [145, 58]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 40} size={1.5} />
+      ))}
+      
+      {/* Baby's breath */}
       {Array.from({ length: 30 }).map((_, i) => {
         const x = 25 + (i % 10) * 14 + Math.sin(i) * 5;
         const y = 30 + Math.floor(i / 10) * 15 + Math.cos(i) * 5;
-        return <circle key={`breath-${i}`} cx={x} cy={y} r={1.5} fill="#FFFFFF" opacity="0.7" />;
+        return <circle key={`breath-${i}`} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.7" />;
       })}
     </svg>
   );
@@ -717,43 +734,41 @@ function SofaFloralWrap({ side }) {
         </filter>
       </defs>
       
-      {/* NO green blobs - just elegant florals */}
-      
-      {/* Large roses */}
+      {/* Realistic rose clusters - NO green blobs */}
       <g filter="url(#wrapShadow)">
+        {/* Large roses */}
         {[[30, 25], [45, 35], [20, 40], [35, 50]].map(([x, y], i) => (
           <g key={`big-${i}`}>
-            <circle cx={x} cy={y} r={10} fill="#FEFEFE" />
-            <circle cx={x} cy={y} r={7} fill="#FAF8F5" />
-            <circle cx={x} cy={y} r={4} fill="#F5F0EA" />
-            <circle cx={x} cy={y} r={2} fill="#EDE5DB" />
+            <RealisticRose x={x} y={y} size={5} />
+            <RealisticRose x={x - 2.5} y={y - 1.5} size={4} opacity={0.9} />
+            <RealisticRose x={x + 2.5} y={y - 1.5} size={4} opacity={0.9} />
           </g>
         ))}
       </g>
       
       {/* Medium roses */}
       {[[50, 22], [15, 30], [55, 48], [25, 55]].map(([x, y], i) => (
-        <g key={`med-${i}`}>
-          <circle cx={x} cy={y} r={7} fill="#FEFEFE" />
-          <circle cx={x} cy={y} r={5} fill="#F8F5F0" />
-          <circle cx={x} cy={y} r={2.5} fill="#F0EBE3" />
-        </g>
+        <RealisticRose key={`med-${i}`} x={x} y={y} size={3.5} />
       ))}
       
-      {/* Blush accents */}
+      {/* Blush roses */}
       {[[40, 28], [25, 45], [48, 42], [10, 50]].map(([x, y], i) => (
-        <g key={`blush-${i}`}>
-          <circle cx={x} cy={y} r={5} fill="#F5E0DD" />
-          <circle cx={x} cy={y} r={3} fill="#F0D5D0" />
-        </g>
+        <RealisticBlushRose key={`blush-${i}`} x={x} y={y} size={3} />
       ))}
       
-      {/* Filler flowers and baby's breath */}
+      {/* Filler roses */}
       {[[55, 30], [12, 38], [38, 58], [60, 52]].map(([x, y], i) => (
-        <circle key={`fill-${i}`} cx={x} cy={y} r={3.5} fill="#FFF8F5" opacity="0.9" />
+        <RealisticRose key={`fill-${i}`} x={x} y={y} size={2.5} opacity={0.9} />
       ))}
+      
+      {/* Leaves */}
+      {[[18, 35], [52, 40], [22, 52], [48, 58]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 30} size={1.2} />
+      ))}
+      
+      {/* Baby's breath */}
       {Array.from({ length: 12 }).map((_, i) => (
-        <circle key={`dot-${i}`} cx={10 + i * 5} cy={35 + Math.sin(i) * 15} r={1.2} fill="#FFFFFF" opacity="0.6" />
+        <circle key={`dot-${i}`} cx={10 + i * 5} cy={35 + Math.sin(i) * 15} r={1} fill="#FFFFFF" opacity="0.6" />
       ))}
     </svg>
   );
@@ -766,25 +781,22 @@ function AisleFloralBox({ index }) {
       <rect x="5" y="22" width="35" height="26" fill="rgba(255,255,255,0.2)" stroke="#D4AF37" strokeWidth="0.8" rx="2" />
       <rect x="7" y="24" width="31" height="2" fill="rgba(255,255,255,0.3)" />
       
-      {/* Roses overflowing - NO green blobs */}
+      {/* Realistic roses overflowing */}
       <g>
-        <circle cx="22" cy="12" r={8} fill="#FEFEFE" />
-        <circle cx="22" cy="12} r={5.5" fill="#FAF8F5" />
-        <circle cx="22" cy="12" r={3} fill="#F0EBE3" />
+        <RealisticRose x={22} y={12} size={4.5} />
+        <RealisticRose x={18} y={14} size={3.5} />
+        <RealisticRose x={26} y={14} size={3.5} />
         
-        <circle cx="12" cy="18" r={6} fill="#FEFEFE" />
-        <circle cx="12" cy="18" r={4} fill="#F8F5F0" />
+        <RealisticRose x={12} y={18} size={3.5} />
+        <RealisticRose x={32} y={16} size={3.5} />
         
-        <circle cx="32" cy="16" r={6} fill="#FEFEFE" />
-        <circle cx="32" cy="16" r={4} fill="#F8F5F0" />
-        
-        <circle cx="18" cy="22" r={5} fill="#F5E0DD" />
-        <circle cx="28" cy="20" r={4} fill="#F5E0DD" />
+        <RealisticBlushRose x={18} y={22} size={3} />
+        <RealisticBlushRose x={28} y={20} size={3} />
       </g>
       
       {/* Baby's breath */}
       {[[8, 15], [36, 12], [15, 8], [30, 8], [6, 22], [38, 20]].map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={1.5} fill="#FFFFFF" opacity="0.8" />
+        <circle key={i} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.8" />
       ))}
     </svg>
   );
@@ -797,27 +809,27 @@ function TallCenterpiece({ side }) {
       <path d="M20 78 L18 45 Q17 40, 25 38 Q33 40, 32 45 L30 78 Z" fill="#D4AF37" />
       <ellipse cx="25" cy="38" rx="8" ry="3.5" fill="#B8962E" />
       <ellipse cx="25" cy="78" rx="6" ry="2" fill="#A08030" />
-      {/* Vase highlight */}
       <path d="M21 50 L20 70" stroke="#F4E4BA" strokeWidth="2" opacity="0.4" />
       
-      {/* Abundant florals on top - NO green blobs */}
-      {/* Large roses */}
+      {/* Realistic roses on top - NO green blobs */}
       <g>
-        <circle cx="25" cy="15" r={9} fill="#FEFEFE" />
-        <circle cx="25" cy="15" r={6} fill="#FAF8F5" />
-        <circle cx="25" cy="15" r={3} fill="#F0EBE3" />
+        <RealisticRose x={25} y={15} size={5} />
+        <RealisticRose x={20} y={18} size={4} />
+        <RealisticRose x={30} y={17} size={4} />
         
-        <circle cx="15" cy="22" r={7} fill="#FEFEFE" />
-        <circle cx="15" cy="22" r={4.5} fill="#F8F5F0" />
+        <RealisticRose x={15} y={22} size={3.5} />
+        <RealisticRose x={35} y={20} size={3.5} />
         
-        <circle cx="35" cy="20" r={7} fill="#FEFEFE" />
-        <circle cx="35" cy="20" r={4.5} fill="#F8F5F0" />
+        <RealisticBlushRose x={10} y={30} size={3} />
+        <RealisticBlushRose x={40} y={28} size={3} />
         
-        <circle cx="10" cy="30" r={5} fill="#F5E0DD" />
-        <circle cx="40" cy="28" r={5} fill="#F5E0DD" />
-        
-        <circle cx="25" cy="30" r={5} fill="#FEFEFE" />
+        <RealisticRose x={25} y={30} size={3} />
       </g>
+      
+      {/* Elegant leaves */}
+      {[[12, 25], [38, 23], [10, 32], [40, 30]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 45} size={1.3} />
+      ))}
     </svg>
   );
 }
@@ -851,7 +863,7 @@ function PillarCandles({ side }) {
         </linearGradient>
       </defs>
       
-      {/* Gold stand/base */}
+      {/* Gold stand */}
       <rect x="5" y="68" width="30" height="10" rx="3" fill="#D4AF37" />
       <rect x="8" y="65" width="24" height="5" rx="2" fill="#B8962E" />
       <ellipse cx="20" cy="68" rx="10" ry="2" fill="#F4E4BA" opacity="0.5" />
@@ -859,14 +871,9 @@ function PillarCandles({ side }) {
       {/* Candles at different heights */}
       {[[12, 35], [20, 25], [28, 32]].map(([x, h], i) => (
         <g key={i}>
-          {/* Candle body */}
           <rect x={x - 4} y={65 - h} width="8" height={h} rx="1" fill="url(#candleWax)" />
           <ellipse cx={x} cy={65 - h} rx="4" ry="2" fill="#FFFEF8" />
-          
-          {/* Wick */}
           <line x1={x} y1={65 - h - 2} x2={x} y2={65 - h - 6} stroke="#333" strokeWidth="0.8" />
-          
-          {/* Flame with glow */}
           <ellipse cx={x} cy={60 - h} rx="3.5" ry="7" fill="url(#flameGrad2)" filter="url(#candleGlow2)" />
           <ellipse cx={x} cy={59 - h} rx="1.5" ry="4" fill="#FFFEF8" />
         </g>
@@ -893,7 +900,6 @@ function CandleCluster({ side }) {
         </filter>
       </defs>
       
-      {/* Base/tray */}
       <ellipse cx="26" cy="52" rx="24" ry="4" fill="#D4AF37" opacity="0.8" />
       
       {candles.map((c, i) => (
@@ -919,10 +925,7 @@ function Uplighting({ side }) {
         </linearGradient>
       </defs>
       
-      {/* Light beam */}
       <path d="M17.5 105 L2 15 L33 15 Z" fill="url(#uplightBeam2)" />
-      
-      {/* Fixture */}
       <rect x="7" y="98" width="21" height="10" rx="3" fill="#2a2a2a" />
       <rect x="10" y="100" width="15" height="5" rx="2" fill="#D4AF37" opacity="0.9" />
     </svg>
@@ -958,7 +961,6 @@ function StringLights() {
         
         return (
           <g key={rowIdx}>
-            {/* Wire */}
             <polyline
               points={points.join(' ')}
               stroke="#8B7355"
@@ -967,7 +969,6 @@ function StringLights() {
               opacity="0.5"
             />
             
-            {/* Lights */}
             {Array.from({ length: 18 }).map((_, i) => {
               const x = 6 + i * 11;
               const y = row.y + Math.sin(x * 0.05 + rowIdx) * row.amplitude;
@@ -1004,25 +1005,17 @@ function DecorativeGoldPanel({ side }) {
         </pattern>
       </defs>
       
-      {/* Outer frame */}
       <rect x="3" y="3" width="34" height="104" rx="2" fill="none" stroke="url(#panelGold2)" strokeWidth="3" />
-      
-      {/* Inner decorative panel */}
       <rect x="7" y="7" width="26" height="96" rx="1" fill="url(#latticePattern)" opacity="0.3" />
-      
-      {/* Lattice/geometric pattern */}
       <rect x="7" y="7" width="26" height="96" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.4" />
       
-      {/* Decorative elements */}
       <circle cx="20" cy="30" r="8" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.5" />
       <circle cx="20" cy="55" r="6" fill="#D4AF37" opacity="0.2" />
       <circle cx="20" cy="80" r="8" fill="none" stroke="#D4AF37" strokeWidth="1" opacity="0.5" />
       
-      {/* Corner accents */}
-      <circle cx="10" cy="10" r="2" fill="#D4AF37" opacity="0.6" />
-      <circle cx="30" cy="10" r="2" fill="#D4AF37" opacity="0.6" />
-      <circle cx="10" cy="100" r="2" fill="#D4AF37" opacity="0.6" />
-      <circle cx="30" cy="100" r="2" fill="#D4AF37" opacity="0.6" />
+      {[[10, 10], [30, 10], [10, 100], [30, 100]].map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="2" fill="#D4AF37" opacity="0.6" />
+      ))}
     </svg>
   );
 }
@@ -1044,7 +1037,6 @@ function OrnateArchedMirror() {
         </linearGradient>
       </defs>
       
-      {/* Arched frame - ornate style like in reference */}
       <path
         d="M8 92 L8 35 Q8 8, 35 8 Q62 8, 62 35 L62 92 Z"
         stroke="url(#mirrorFrame2)"
@@ -1052,7 +1044,6 @@ function OrnateArchedMirror() {
         fill="none"
       />
       
-      {/* Inner frame line */}
       <path
         d="M13 90 L13 37 Q13 13, 35 13 Q57 13, 57 37 L57 90 Z"
         stroke="#D4AF37"
@@ -1061,20 +1052,14 @@ function OrnateArchedMirror() {
         opacity="0.6"
       />
       
-      {/* Mirror glass */}
       <path
         d="M15 88 L15 38 Q15 16, 35 16 Q55 16, 55 38 L55 88 Z"
         fill="url(#mirrorGlass2)"
       />
       
-      {/* Reflection highlight */}
       <ellipse cx="28" cy="45" rx="10" ry="18" fill="white" opacity="0.2" />
-      
-      {/* Decorative mullions (like the reference window) */}
       <line x1="35" y1="16" x2="35" y2="88" stroke="#D4AF37" strokeWidth="1" opacity="0.3" />
       <path d="M15 55 Q35 50, 55 55" stroke="#D4AF37" strokeWidth="1" fill="none" opacity="0.3" />
-      
-      {/* Top arch detail */}
       <circle cx="35" cy="20" r="3" fill="#D4AF37" opacity="0.5" />
     </svg>
   );
@@ -1098,14 +1083,10 @@ function MoroccanLantern({ side }) {
         </linearGradient>
       </defs>
       
-      {/* Hanging chain */}
       <line x1="20" y1="0" x2="20" y2="8" stroke="#D4AF37" strokeWidth="1" />
       <circle cx="20" cy="4" r="2" fill="#D4AF37" />
-      
-      {/* Lantern top */}
       <path d="M12 10 L20 5 L28 10 Z" fill="url(#lanternGold)" />
       
-      {/* Lantern body */}
       <path 
         d="M10 12 L10 50 Q10 58, 20 58 Q30 58, 30 50 L30 12 Q30 8, 20 8 Q10 8, 10 12 Z" 
         fill="none" 
@@ -1113,20 +1094,15 @@ function MoroccanLantern({ side }) {
         strokeWidth="2"
       />
       
-      {/* Glass panels with pattern */}
       <rect x="12" y="14" width="16" height="40" fill="#D4AF37" opacity="0.1" />
-      
-      {/* Decorative pattern */}
       <path d="M20 14 L20 54" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4" />
-      <path d="M12 25 L28 25" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4" />
-      <path d="M12 35 L28 35" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4" />
-      <path d="M12 45 L28 45" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4" />
+      {[25, 35, 45].map((y, i) => (
+        <path key={i} d={`M12 ${y} L28 ${y}`} stroke="#D4AF37" strokeWidth="0.8" opacity="0.4" />
+      ))}
       
-      {/* Inner glow */}
       <ellipse cx="20" cy="35" rx="6" ry="12" fill="#FFF9E6" opacity="0.6" filter="url(#lanternGlow2)" />
       <ellipse cx="20" cy="35" rx="3" ry="6" fill="#FFFEF8" opacity="0.8" />
       
-      {/* Bottom detail */}
       <ellipse cx="20" cy="58" rx="5" ry="2" fill="#D4AF37" />
       <circle cx="20" cy="62" r="2" fill="#D4AF37" />
     </svg>
@@ -1144,16 +1120,9 @@ function AisleRunner() {
         </linearGradient>
       </defs>
       
-      {/* Runner fabric with slight perspective */}
       <path d="M10 0 L55 0 L60 110 L5 110 Z" fill="url(#runnerGrad2)" />
-      
-      {/* Gold trim border */}
       <path d="M12 3 L53 3 L57 107 L8 107 Z" fill="none" stroke="#D4AF37" strokeWidth="2" />
-      
-      {/* Inner decorative line */}
       <path d="M16 8 L49 8 L53 102 L12 102 Z" fill="none" stroke="#D4AF37" strokeWidth="0.8" opacity="0.5" />
-      
-      {/* Subtle pattern */}
       <line x1="32.5" y1="15" x2="32.5" y2="95" stroke="#D4AF37" strokeWidth="0.5" opacity="0.3" />
     </svg>
   );
@@ -1177,19 +1146,10 @@ function WhiteStagePlatform() {
         </linearGradient>
       </defs>
       
-      {/* Platform top surface */}
       <rect x="0" y="5" width="200" height="35" fill="url(#platformTop)" />
-      
-      {/* Top edge highlight */}
       <rect x="0" y="5" width="200" height="8" fill="rgba(255,255,255,0.6)" />
-      
-      {/* Front face */}
       <rect x="0" y="38" width="200" height="15" fill="url(#platformFront)" />
-      
-      {/* Edge detail */}
       <line x1="0" y1="40" x2="200" y2="40" stroke="rgba(0,0,0,0.05)" strokeWidth="1" />
-      
-      {/* Subtle floor reflection */}
       <rect x="5" y="10" width="190" height="25" fill="rgba(212,175,55,0.02)" />
     </svg>
   );
@@ -1210,17 +1170,10 @@ function PersianCarpet() {
         </pattern>
       </defs>
       
-      {/* Carpet base */}
       <rect x="5" y="5" width="150" height="65" rx="2" fill="url(#carpetGrad2)" />
-      
-      {/* Pattern overlay */}
       <rect x="5" y="5" width="150" height="65" fill="url(#carpetPattern)" />
-      
-      {/* Decorative border */}
       <rect x="10" y="10" width="140" height="55" fill="none" stroke="#F4E4BA" strokeWidth="3" />
       <rect x="18" y="18" width="124" height="39" fill="none" stroke="#8B7355" strokeWidth="1.5" opacity="0.5" />
-      
-      {/* Center medallion */}
       <ellipse cx="80" cy="37.5" rx="30" ry="15" fill="none" stroke="#F4E4BA" strokeWidth="2" opacity="0.6" />
       <ellipse cx="80" cy="37.5" rx="18" ry="9" fill="#8B7355" opacity="0.25" />
       <ellipse cx="80" cy="37.5" rx="8" ry="4" fill="#F4E4BA" opacity="0.4" />
@@ -1238,15 +1191,10 @@ function StageSteps() {
         </linearGradient>
       </defs>
       
-      {/* Bottom step */}
       <rect x="5" y="25" width="90" height="13" rx="2" fill="url(#stepGrad2)" />
       <rect x="5" y="25" width="90" height="4" fill="rgba(255,255,255,0.5)" rx="2" />
-      
-      {/* Top step */}
       <rect x="15" y="10" width="70" height="17" rx="2" fill="url(#stepGrad2)" />
       <rect x="15" y="10" width="70" height="5" fill="rgba(255,255,255,0.6)" rx="2" />
-      
-      {/* Edge shadows */}
       <line x1="5" y1="38" x2="95" y2="38" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
       <line x1="15" y1="27" x2="85" y2="27" stroke="rgba(0,0,0,0.05)" strokeWidth="1" />
     </svg>

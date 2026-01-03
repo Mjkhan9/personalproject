@@ -17,49 +17,78 @@ export const StageItem = memo(function StageItem({ item, instanceIndex = 0, tota
 });
 
 // ============================================
-// REALISTIC ROSE COMPONENT - Reusable
+// REALISTIC ROSE COMPONENT - Proper petal shapes
 // ============================================
 function RealisticRose({ x, y, size = 1, color = '#FEFEFE', opacity = 1 }) {
   const scale = size;
+  const isWhite = color === '#FEFEFE';
+  const baseColor = isWhite ? '#FFFFFF' : color;
+  const lightColor = isWhite ? '#FAFAFA' : '#FFF';
+  const darkColor = isWhite ? '#F0F0F0' : '#E0E0E0';
+  
   return (
     <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
-      {/* Outer petals - layered */}
-      <path
-        d="M0,0 Q-3,-2 -4,2 Q-3,4 0,3 Q3,4 4,2 Q3,-2 0,0"
-        fill={color}
-        opacity="0.95"
-      />
-      <path
-        d="M0,0 Q-2.5,-1.5 -3.5,1.5 Q-2.5,3.5 0,2.5 Q2.5,3.5 3.5,1.5 Q2.5,-1.5 0,0"
-        fill={color === '#FEFEFE' ? '#FAF8F5' : color}
-        opacity="0.9"
-      />
-      {/* Center petals */}
-      <ellipse cx="0" cy="0.5" rx="1.5" ry="2" fill={color === '#FEFEFE' ? '#F5F0EA' : color} opacity="0.85" />
-      <ellipse cx="-0.8" cy="0.3" rx="1" ry="1.5" fill={color === '#FEFEFE' ? '#F0EBE3' : color} opacity="0.8" />
-      <ellipse cx="0.8" cy="0.3" rx="1" ry="1.5" fill={color === '#FEFEFE' ? '#F0EBE3' : color} opacity="0.8" />
-      {/* Center */}
-      <circle cx="0" cy="0.5" r="0.6" fill={color === '#FEFEFE' ? '#EDE5DB' : '#D4A5A5'} />
+      <defs>
+        <linearGradient id={`roseGrad-${x}-${y}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor={lightColor} />
+          <stop offset="50%" stopColor={baseColor} />
+          <stop offset="100%" stopColor={darkColor} />
+        </linearGradient>
+      </defs>
+      
+      {/* Outer layer - 5 petals */}
+      <path d="M0,2 Q-2.5,-1 -3.5,1.5 Q-3,4 -1,4.5 Q0,5 1,4.5 Q3,4 3.5,1.5 Q2.5,-1 0,2" 
+        fill={`url(#roseGrad-${x}-${y})`} stroke={darkColor} strokeWidth="0.1" />
+      
+      {/* Second layer - 5 petals rotated */}
+      <path d="M0,2.5 Q-2,-0.5 -2.8,2 Q-2.5,3.5 -1,4 Q0,4.2 1,4 Q2.5,3.5 2.8,2 Q2,-0.5 0,2.5" 
+        fill={baseColor} opacity="0.95" />
+      
+      {/* Third layer - inner petals */}
+      <path d="M0,3 Q-1.5,1 -1.8,2.5 Q-1.5,3.2 -0.5,3.5 Q0,3.6 0.5,3.5 Q1.5,3.2 1.8,2.5 Q1.5,1 0,3" 
+        fill={lightColor} opacity="0.9" />
+      
+      {/* Center bud */}
+      <ellipse cx="0" cy="3.2" rx="1" ry="1.3" fill={darkColor} opacity="0.8" />
+      <circle cx="0" cy="3.2" r="0.5" fill={isWhite ? '#E8E8E8' : '#C0C0C0'} />
+      
+      {/* Highlight */}
+      <ellipse cx="-0.8" cy="2" rx="0.8" ry="1.2" fill={lightColor} opacity="0.6" />
     </g>
   );
 }
 
 function RealisticBlushRose({ x, y, size = 1, opacity = 1 }) {
   const scale = size;
+  
   return (
     <g transform={`translate(${x}, ${y}) scale(${scale})`} opacity={opacity}>
-      <path
-        d="M0,0 Q-3,-2 -4,2 Q-3,4 0,3 Q3,4 4,2 Q3,-2 0,0"
-        fill="#F5E0DD"
-        opacity="0.95"
-      />
-      <path
-        d="M0,0 Q-2.5,-1.5 -3.5,1.5 Q-2.5,3.5 0,2.5 Q2.5,3.5 3.5,1.5 Q2.5,-1.5 0,0"
-        fill="#F0D5D0"
-        opacity="0.9"
-      />
-      <ellipse cx="0" cy="0.5" rx="1.5" ry="2" fill="#E8C5C0" opacity="0.85" />
-      <circle cx="0" cy="0.5" r="0.6" fill="#D4A5A5" />
+      <defs>
+        <linearGradient id={`blushGrad-${x}-${y}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFF0F0" />
+          <stop offset="50%" stopColor="#F5E0DD" />
+          <stop offset="100%" stopColor="#E8C5C0" />
+        </linearGradient>
+      </defs>
+      
+      {/* Outer layer */}
+      <path d="M0,2 Q-2.5,-1 -3.5,1.5 Q-3,4 -1,4.5 Q0,5 1,4.5 Q3,4 3.5,1.5 Q2.5,-1 0,2" 
+        fill={`url(#blushGrad-${x}-${y})`} stroke="#E0B5B0" strokeWidth="0.1" />
+      
+      {/* Second layer */}
+      <path d="M0,2.5 Q-2,-0.5 -2.8,2 Q-2.5,3.5 -1,4 Q0,4.2 1,4 Q2.5,3.5 2.8,2 Q2,-0.5 0,2.5" 
+        fill="#F5E0DD" opacity="0.95" />
+      
+      {/* Inner petals */}
+      <path d="M0,3 Q-1.5,1 -1.8,2.5 Q-1.5,3.2 -0.5,3.5 Q0,3.6 0.5,3.5 Q1.5,3.2 1.8,2.5 Q1.5,1 0,3" 
+        fill="#FFF0F0" opacity="0.9" />
+      
+      {/* Center */}
+      <ellipse cx="0" cy="3.2" rx="1" ry="1.3" fill="#E8C5C0" opacity="0.8" />
+      <circle cx="0" cy="3.2" r="0.5" fill="#D4A5A5" />
+      
+      {/* Highlight */}
+      <ellipse cx="-0.8" cy="2" rx="0.8" ry="1.2" fill="#FFF0F0" opacity="0.6" />
     </g>
   );
 }
@@ -310,6 +339,10 @@ function FloralArch() {
           <stop offset="70%" stopColor="#F4E4BA" />
           <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
+        <linearGradient id="archGoldInner" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#F4E4BA" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0.3" />
+        </linearGradient>
         <filter id="archGlow">
           <feGaussianBlur stdDeviation="1" result="blur"/>
           <feMerge>
@@ -320,55 +353,74 @@ function FloralArch() {
         <filter id="archShadow">
           <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.2"/>
         </filter>
+        <filter id="roseShadow">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodOpacity="0.3"/>
+        </filter>
       </defs>
       
-      {/* Elegant gold arch frame with depth */}
+      {/* Elegant gold arch frame with depth and thickness */}
       <path
         d="M15 128 L15 55 Q15 12, 50 12 Q85 12, 85 55 L85 128"
         stroke="url(#archGold)"
-        strokeWidth="3"
+        strokeWidth="4"
         fill="none"
         opacity="0.95"
         filter="url(#archGlow)"
       />
       
-      {/* Inner highlight for dimension */}
+      {/* Inner frame for dimension */}
       <path
         d="M17 126 L17 56 Q17 14, 50 14 Q83 14, 83 56 L83 126"
-        stroke="#F4E4BA"
-        strokeWidth="1.5"
+        stroke="url(#archGoldInner)"
+        strokeWidth="2"
         fill="none"
-        opacity="0.5"
+        opacity="0.7"
       />
       
-      {/* Realistic roses - top center */}
-      <RealisticRose x={50} y={18} size={5} />
-      <RealisticRose x={46} y={16} size={4} />
-      <RealisticRose x={54} y={16} size={4} />
+      {/* Decorative scrollwork at top */}
+      <path d="M45 12 Q50 10 55 12" stroke="#F4E4BA" strokeWidth="1.5" fill="none" opacity="0.6" />
       
-      {/* Cascading roses down the sides */}
-      {[[22, 35], [78, 35], [18, 55], [82, 55], [20, 75], [80, 75], [22, 95], [78, 95]].map(([x, y], i) => (
-        <g key={`rose-${i}`}>
-          <RealisticRose x={x} y={y} size={4} />
-          <RealisticRose x={x + 2} y={y - 1} size={3.5} opacity={0.85} />
-          <RealisticRose x={x - 2} y={y - 1} size={3.5} opacity={0.85} />
+      {/* Realistic roses - top center cluster */}
+      <g filter="url(#roseShadow)">
+        <RealisticRose x={50} y={18} size={6} />
+        <RealisticRose x={46} y={16} size={5} />
+        <RealisticRose x={54} y={16} size={5} />
+        <RealisticRose x={48} y={20} size={4.5} />
+        <RealisticRose x={52} y={20} size={4.5} />
+      </g>
+      
+      {/* Cascading roses down the sides - more abundant */}
+      {[[22, 35], [78, 35], [18, 55], [82, 55], [20, 75], [80, 75], [22, 95], [78, 95], [24, 110], [76, 110]].map(([x, y], i) => (
+        <g key={`rose-${i}`} filter="url(#roseShadow)">
+          <RealisticRose x={x} y={y} size={4.5} />
+          <RealisticRose x={x + 2.5} y={y - 1.5} size={4} opacity={0.9} />
+          <RealisticRose x={x - 2.5} y={y - 1.5} size={4} opacity={0.9} />
+          <RealisticRose x={x + 1.5} y={y + 1.5} size={3.5} opacity={0.85} />
+          <RealisticRose x={x - 1.5} y={y + 1.5} size={3.5} opacity={0.85} />
         </g>
       ))}
       
-      {/* Blush roses for variety */}
-      {[[25, 30], [75, 30], [30, 50], [70, 50]].map(([x, y], i) => (
-        <RealisticBlushRose key={`blush-${i}`} x={x} y={y} size={3.5} />
+      {/* Blush roses for variety - more prominent */}
+      {[[25, 30], [75, 30], [30, 50], [70, 50], [28, 70], [72, 70], [26, 90], [74, 90]].map(([x, y], i) => (
+        <g key={`blush-${i}`} filter="url(#roseShadow)">
+          <RealisticBlushRose x={x} y={y} size={4} />
+          <RealisticBlushRose x={x + 1.5} y={y - 1} size={3.5} opacity={0.9} />
+        </g>
       ))}
       
-      {/* Elegant leaves */}
-      {[[16, 50], [84, 50], [17, 70], [83, 70], [19, 90], [81, 90]].map(([x, y], i) => (
-        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 30} size={1.2} />
+      {/* Elegant leaves - more visible */}
+      {[[16, 50], [84, 50], [17, 70], [83, 70], [19, 90], [81, 90], [20, 110], [80, 110]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 30} size={1.5} />
       ))}
       
-      {/* Baby's breath */}
-      {[[25, 25], [75, 25], [30, 45], [70, 45], [25, 65], [75, 65], [28, 85], [72, 85]].map(([x, y], i) => (
-        <circle key={`breath-${i}`} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.6" />
-      ))}
+      {/* Baby's breath - more scattered */}
+      {Array.from({ length: 40 }).map((_, i) => {
+        const angle = (i / 40) * Math.PI * 2;
+        const radius = 30 + (i % 3) * 8;
+        const x = 50 + Math.cos(angle) * radius;
+        const y = 50 + Math.sin(angle) * radius;
+        return <circle key={`breath-${i}`} cx={x} cy={y} r={1.5} fill="#FFFFFF" opacity="0.7" />;
+      })}
     </svg>
   );
 }
@@ -384,56 +436,81 @@ function TripleFloralArch() {
           <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
         <filter id="tripleGlow">
-          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feGaussianBlur stdDeviation="1" result="blur"/>
           <feMerge>
             <feMergeNode in="blur"/>
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
+        <filter id="tripleRoseShadow">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodOpacity="0.3"/>
+        </filter>
       </defs>
       
-      {/* Three elegant gold arch frames with depth */}
-      <path d="M10 108 L10 45 Q10 8, 80 8 Q150 8, 150 45 L150 108" stroke="url(#archGoldTriple)" strokeWidth="2.5" fill="none" opacity="0.8" filter="url(#tripleGlow)" />
-      <path d="M25 108 L25 48 Q25 15, 80 15 Q135 15, 135 48 L135 108" stroke="url(#archGoldTriple)" strokeWidth="3" fill="none" opacity="0.85" filter="url(#tripleGlow)" />
-      <path d="M40 108 L40 50 Q40 22, 80 22 Q120 22, 120 50 L120 108" stroke="url(#archGoldTriple)" strokeWidth="3.5" fill="none" opacity="0.9" filter="url(#tripleGlow)" />
+      {/* Three elegant gold arch frames with depth - thicker and more prominent */}
+      <path d="M10 108 L10 45 Q10 8, 80 8 Q150 8, 150 45 L150 108" stroke="url(#archGoldTriple)" strokeWidth="4" fill="none" opacity="0.95" filter="url(#tripleGlow)" />
+      <path d="M25 108 L25 48 Q25 15, 80 15 Q135 15, 135 48 L135 108" stroke="url(#archGoldTriple)" strokeWidth="4.5" fill="none" opacity="0.9" filter="url(#tripleGlow)" />
+      <path d="M40 108 L40 50 Q40 22, 80 22 Q120 22, 120 50 L120 108" stroke="url(#archGoldTriple)" strokeWidth="5" fill="none" opacity="0.95" filter="url(#tripleGlow)" />
       
-      {/* Realistic rose clusters - top center */}
-      <RealisticRose x={80} y={12} size={6} />
-      <RealisticRose x={76} y={10} size={5} />
-      <RealisticRose x={84} y={10} size={5} />
+      {/* Realistic rose clusters - top center - abundant */}
+      <g filter="url(#tripleRoseShadow)">
+        <RealisticRose x={80} y={12} size={7} />
+        <RealisticRose x={76} y={10} size={6} />
+        <RealisticRose x={84} y={10} size={6} />
+        <RealisticRose x={74} y={14} size={5.5} />
+        <RealisticRose x={86} y={14} size={5.5} />
+        <RealisticRose x={78} y={16} size={5} />
+        <RealisticRose x={82} y={16} size={5} />
+      </g>
       
-      {/* Outer arch roses */}
-      {[[15, 30], [145, 30], [12, 50], [148, 50], [15, 70], [145, 70], [18, 90], [142, 90]].map(([x, y], i) => (
-        <g key={`outer-${i}`}>
-          <RealisticRose x={x} y={y} size={4.5} />
-          <RealisticRose x={x + 2} y={y - 1} size={4} opacity={0.85} />
+      {/* Outer arch roses - cascading abundantly */}
+      {[[15, 30], [145, 30], [12, 50], [148, 50], [15, 70], [145, 70], [18, 90], [142, 90], [20, 105], [140, 105]].map(([x, y], i) => (
+        <g key={`outer-${i}`} filter="url(#tripleRoseShadow)">
+          <RealisticRose x={x} y={y} size={5} />
+          <RealisticRose x={x + 2.5} y={y - 1.5} size={4.5} opacity={0.9} />
+          <RealisticRose x={x - 2.5} y={y - 1.5} size={4.5} opacity={0.9} />
+          <RealisticRose x={x + 1.5} y={y + 1.5} size={4} opacity={0.85} />
         </g>
       ))}
       
-      {/* Middle arch roses */}
-      {[[30, 35], [130, 35], [28, 55], [132, 55], [30, 75], [130, 75]].map(([x, y], i) => (
-        <RealisticRose key={`mid-${i}`} x={x} y={y} size={4} />
+      {/* Middle arch roses - more dense */}
+      {[[30, 35], [130, 35], [28, 55], [132, 55], [30, 75], [130, 75], [32, 95], [128, 95]].map(([x, y], i) => (
+        <g key={`mid-${i}`} filter="url(#tripleRoseShadow)">
+          <RealisticRose x={x} y={y} size={4.5} />
+          <RealisticRose x={x + 2} y={y - 1} size={4} opacity={0.9} />
+          <RealisticRose x={x - 2} y={y - 1} size={4} opacity={0.9} />
+        </g>
       ))}
       
-      {/* Inner arch roses */}
-      {[[45, 40], [115, 40], [42, 60], [118, 60], [45, 80], [115, 80]].map(([x, y], i) => (
-        <RealisticRose key={`inner-${i}`} x={x} y={y} size={3.5} />
+      {/* Inner arch roses - clustered */}
+      {[[45, 40], [115, 40], [42, 60], [118, 60], [45, 80], [115, 80], [47, 100], [113, 100]].map(([x, y], i) => (
+        <g key={`inner-${i}`} filter="url(#tripleRoseShadow)">
+          <RealisticRose x={x} y={y} size={4} />
+          <RealisticRose x={x + 1.5} y={y - 1} size={3.5} opacity={0.9} />
+        </g>
       ))}
       
-      {/* Blush roses */}
-      {[[20, 45], [140, 45], [55, 25], [105, 25], [35, 65], [125, 65], [40, 85], [120, 85]].map(([x, y], i) => (
-        <RealisticBlushRose key={`blush-${i}`} x={x} y={y} size={3} />
+      {/* Blush roses - more prominent */}
+      {[[20, 45], [140, 45], [55, 25], [105, 25], [35, 65], [125, 65], [40, 85], [120, 85], [38, 100], [122, 100]].map(([x, y], i) => (
+        <g key={`blush-${i}`} filter="url(#tripleRoseShadow)">
+          <RealisticBlushRose x={x} y={y} size={4} />
+          <RealisticBlushRose x={x + 1.5} y={y - 1} size={3.5} opacity={0.9} />
+        </g>
       ))}
       
-      {/* Elegant leaves */}
-      {[[18, 55], [142, 55], [32, 70], [128, 70], [38, 88], [122, 88]].map(([x, y], i) => (
-        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 25} size={1} />
+      {/* Elegant leaves - more visible */}
+      {[[18, 55], [142, 55], [32, 70], [128, 70], [38, 88], [122, 88], [35, 102], [125, 102]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 25} size={1.3} />
       ))}
       
-      {/* Baby's breath */}
-      {[[25, 20], [135, 20], [22, 40], [138, 40], [28, 60], [132, 60], [30, 80], [130, 80]].map(([x, y], i) => (
-        <circle key={`breath-${i}`} cx={x} cy={y} r={1} fill="#FFFFFF" opacity="0.5" />
-      ))}
+      {/* Baby's breath - scattered throughout */}
+      {Array.from({ length: 50 }).map((_, i) => {
+        const angle = (i / 50) * Math.PI * 2;
+        const radius = 25 + (i % 4) * 10;
+        const x = 80 + Math.cos(angle) * radius;
+        const y = 50 + Math.sin(angle) * radius;
+        return <circle key={`breath-${i}`} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.6" />;
+      })}
     </svg>
   );
 }
@@ -449,42 +526,76 @@ function HexagonArch() {
           <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
         <filter id="hexGlow">
-          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feGaussianBlur stdDeviation="1" result="blur"/>
           <feMerge>
             <feMergeNode in="blur"/>
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
+        <filter id="hexRoseShadow">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodOpacity="0.3"/>
+        </filter>
       </defs>
       
-      {/* Hexagon frame */}
+      {/* Hexagon frame - thicker */}
       <polygon
         points="50,8 88,28 88,78 50,98 12,78 12,28"
         stroke="url(#hexGold)"
-        strokeWidth="4"
+        strokeWidth="5"
         fill="none"
         strokeLinejoin="round"
         filter="url(#hexGlow)"
-        opacity="0.9"
+        opacity="0.95"
       />
       
-      {/* Realistic roses at corners */}
+      {/* Inner highlight */}
+      <polygon
+        points="50,10 86,29 86,77 50,96 14,77 14,29"
+        stroke="#F4E4BA"
+        strokeWidth="2"
+        fill="none"
+        strokeLinejoin="round"
+        opacity="0.5"
+      />
+      
+      {/* Realistic roses at corners - abundant clusters */}
       {[[12, 28], [12, 53], [12, 78], [50, 8], [88, 28], [88, 53], [88, 78], [50, 98]].map(([x, y], i) => (
-        <g key={i}>
-          <RealisticRose x={x} y={y} size={3.5} />
+        <g key={i} filter="url(#hexRoseShadow)">
+          <RealisticRose x={x} y={y} size={4.5} />
+          <RealisticRose x={x + (x < 50 ? 2.5 : -2.5)} y={y} size={4} opacity={0.9} />
+          <RealisticRose x={x} y={y + (y < 50 ? 2.5 : -2.5)} size={4} opacity={0.9} />
           {i % 2 === 0 && (
-            <RealisticRose x={x + (x < 50 ? 2 : -2)} y={y} size={3} opacity={0.85} />
+            <RealisticBlushRose x={x + (x < 50 ? 1.5 : -1.5)} y={y + (y < 50 ? 1.5 : -1.5)} size={3.5} />
           )}
         </g>
       ))}
       
-      {/* Top center */}
-      <RealisticRose x={50} y={8} size={4.5} />
-      <RealisticRose x={48} y={6} size={3.5} />
-      <RealisticRose x={52} y={6} size={3.5} />
+      {/* Top center - abundant cluster */}
+      <g filter="url(#hexRoseShadow)">
+        <RealisticRose x={50} y={8} size={5.5} />
+        <RealisticRose x={48} y={6} size={4.5} />
+        <RealisticRose x={52} y={6} size={4.5} />
+        <RealisticRose x={46} y={10} size={4} />
+        <RealisticRose x={54} y={10} size={4} />
+        <RealisticBlushRose x={50} y={10} size={4} />
+      </g>
       
       {/* Bottom center */}
-      <RealisticBlushRose x={50} y={98} size={3.5} />
+      <g filter="url(#hexRoseShadow)">
+        <RealisticBlushRose x={50} y={98} size={4.5} />
+        <RealisticRose x={48} y={96} size={4} />
+        <RealisticRose x={52} y={96} size={4} />
+      </g>
+      
+      {/* Additional roses along edges */}
+      {[[30, 18], [70, 18], [25, 40], [75, 40], [25, 70], [75, 70], [30, 100], [70, 100]].map(([x, y], i) => (
+        <RealisticRose key={`edge-${i}`} x={x} y={y} size={3.5} opacity={0.9} />
+      ))}
+      
+      {/* Elegant leaves */}
+      {[[20, 35], [80, 35], [18, 65], [82, 65]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 45} size={1.2} />
+      ))}
     </svg>
   );
 }
@@ -500,32 +611,65 @@ function RectangleArch() {
           <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
         <filter id="rectGlow">
-          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feGaussianBlur stdDeviation="1" result="blur"/>
           <feMerge>
             <feMergeNode in="blur"/>
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
+        <filter id="rectRoseShadow">
+          <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodOpacity="0.3"/>
+        </filter>
       </defs>
       
-      {/* Rectangle frame */}
-      <rect x="10" y="8" width="80" height="100" stroke="url(#rectGold)" strokeWidth="3.5" fill="none" rx="2" filter="url(#rectGlow)" opacity="0.9" />
+      {/* Rectangle frame - thicker */}
+      <rect x="10" y="8" width="80" height="100" stroke="url(#rectGold)" strokeWidth="5" fill="none" rx="3" filter="url(#rectGlow)" opacity="0.95" />
       
-      {/* Realistic roses along frame */}
+      {/* Inner highlight */}
+      <rect x="12" y="10" width="76" height="96" stroke="#F4E4BA" strokeWidth="2" fill="none" rx="2" opacity="0.5" />
+      
+      {/* Realistic roses along frame - abundant clusters */}
       {[0, 20, 40, 60, 80].map((y, i) => (
-        <g key={i}>
-          <RealisticRose x={12} y={15 + y} size={3.5} />
-          <RealisticRose x={88} y={15 + y} size={3.5} />
+        <g key={i} filter="url(#rectRoseShadow)">
+          <RealisticRose x={12} y={15 + y} size={4.5} />
+          <RealisticRose x={12} y={13 + y} size={4} opacity={0.9} />
+          <RealisticRose x={12} y={17 + y} size={4} opacity={0.9} />
+          <RealisticRose x={88} y={15 + y} size={4.5} />
+          <RealisticRose x={88} y={13 + y} size={4} opacity={0.9} />
+          <RealisticRose x={88} y={17 + y} size={4} opacity={0.9} />
+          {i % 2 === 0 && (
+            <>
+              <RealisticBlushRose x={12} y={15 + y} size={3.5} opacity={0.8} />
+              <RealisticBlushRose x={88} y={15 + y} size={3.5} opacity={0.8} />
+            </>
+          )}
         </g>
       ))}
       
-      {/* Top florals */}
+      {/* Top florals - abundant clusters */}
       {[25, 50, 75].map((x, i) => (
-        <g key={i}>
-          <RealisticRose x={x} y={10} size={4} />
-          <RealisticRose x={x - 1.5} y={8} size={3} opacity={0.9} />
-          <RealisticRose x={x + 1.5} y={8} size={3} opacity={0.9} />
+        <g key={i} filter="url(#rectRoseShadow)">
+          <RealisticRose x={x} y={10} size={5} />
+          <RealisticRose x={x - 2} y={8} size={4} opacity={0.9} />
+          <RealisticRose x={x + 2} y={8} size={4} opacity={0.9} />
+          <RealisticRose x={x - 1.5} y={12} size={4} opacity={0.9} />
+          <RealisticRose x={x + 1.5} y={12} size={4} opacity={0.9} />
+          <RealisticBlushRose x={x} y={12} size={3.5} />
         </g>
+      ))}
+      
+      {/* Bottom florals */}
+      {[30, 50, 70].map((x, i) => (
+        <g key={`bottom-${i}`} filter="url(#rectRoseShadow)">
+          <RealisticRose x={x} y={105} size={4} />
+          <RealisticRose x={x - 1.5} y={107} size={3.5} opacity={0.9} />
+          <RealisticRose x={x + 1.5} y={107} size={3.5} opacity={0.9} />
+        </g>
+      ))}
+      
+      {/* Elegant leaves */}
+      {[[15, 30], [85, 30], [15, 60], [85, 60], [15, 90], [85, 90]].map(([x, y], i) => (
+        <RealisticLeaf key={`leaf-${i}`} x={x} y={y} angle={i * 30} size={1.2} />
       ))}
     </svg>
   );

@@ -110,7 +110,7 @@ function StageSVG({ itemId, instanceIndex }) {
   if (itemId === 'sofa-cream-tufted') return <TuftedSofa />;
   if (itemId === 'sofa-velvet-blush') return <TuftedSofa color="blush" />;
   if (itemId === 'chairs-accent-pair') return <AccentChair side={instanceIndex === 0 ? 'left' : 'right'} />;
-  if (itemId === 'seating-floor-cushions') return <FloorCushions />;
+  if (itemId === 'cushions-floor-set') return <FloorCushions />;
   
   // FLORALS - Actual floral arrangements
   if (itemId === 'floral-arch-arrangement') return <FloralGarland />;
@@ -122,18 +122,18 @@ function StageSVG({ itemId, instanceIndex }) {
   if (itemId === 'lighting-pillar-candles') return <PillarCandles side={instanceIndex === 0 ? 'left' : 'right'} />;
   if (itemId === 'lighting-candle-cluster') return <CandleCluster side={instanceIndex === 0 ? 'left' : 'right'} />;
   if (itemId === 'lighting-uplighting') return <Uplighting side={instanceIndex === 0 ? 'left' : 'right'} />;
-  if (itemId === 'lighting-string-lights') return <StringLights />;
+  if (itemId === 'lighting-string-addition') return <StringLights />;
   
   // ACCENTS - Gold panels like in image 1
   if (itemId === 'accent-gold-panels') return <DecorativeGoldPanel side={instanceIndex === 0 ? 'left' : 'right'} />;
   if (itemId === 'accent-mirror-frame') return <MirrorFrame />;
   if (itemId === 'accent-lantern-set') return <MoroccanLantern side={instanceIndex === 0 ? 'left' : 'right'} />;
+  if (itemId === 'accent-aisle-runner') return <AisleRunner />;
   
-  // FLOOR
-  if (itemId === 'floor-aisle-runner') return <AisleRunner />;
-  if (itemId === 'floor-stage-riser') return <StageRiser />;
-  if (itemId === 'floor-carpet') return <StageCarpet />;
-  if (itemId === 'floor-steps') return <StageSteps />;
+  // STAGE & BASE
+  if (itemId === 'stage-white-riser') return <StageRiser />;
+  if (itemId === 'stage-carpet') return <StageCarpet />;
+  if (itemId === 'stage-steps') return <StageSteps />;
   
   return <DefaultItem />;
 }

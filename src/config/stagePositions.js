@@ -89,6 +89,10 @@ export const ITEM_POSITIONS = {
       { x: 62, y: 68, width: 9, height: 11, zIndex: Z_LAYERS.seating },
     ]
   },
+  'seating-floor-cushions': { 
+    x: 50, y: 80, width: 40, height: 8,
+    zIndex: Z_LAYERS.seating + 2 
+  },
   'cushions-floor-set': { 
     x: 50, y: 80, width: 40, height: 8,
     zIndex: Z_LAYERS.seating + 2 
@@ -198,6 +202,22 @@ export const ITEM_POSITIONS = {
   'stage-steps': { 
     x: 50, y: 92, width: 28, height: 12,
     zIndex: Z_LAYERS.platform + 1 
+  },
+  
+  // ==========================================
+  // AISLE RUNNER (in accents)
+  // ==========================================
+  'accent-aisle-runner': { 
+    x: 50, y: 88, width: 18, height: 22,
+    zIndex: Z_LAYERS.aisle 
+  },
+  
+  // ==========================================  
+  // STRING LIGHTS (in lighting)
+  // ==========================================
+  'lighting-string-addition': { 
+    x: 50, y: 8, width: 88, height: 10,
+    zIndex: Z_LAYERS.stringLights 
   },
 };
 

@@ -22,13 +22,7 @@ export function CategorySidebar() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-2xl shadow-lg overflow-hidden">
-      {/* Header */}
-      <div className="px-5 py-4 bg-gradient-to-r from-neutral-dark to-neutral-dark/90 text-white">
-        <h2 className="text-lg font-serif font-semibold">Browse Decor</h2>
-        <p className="text-xs text-white/60 mt-1">Select items to build your setup</p>
-      </div>
-
+    <div className="h-full flex flex-col">
       {/* Categories */}
       <div className="flex-1 overflow-y-auto p-3 space-y-2">
         {categories.map((category) => {
@@ -46,8 +40,9 @@ export function CategorySidebar() {
                   transition-all duration-300
                   ${isOpen 
                     ? 'bg-primary text-neutral-dark' 
-                    : 'bg-neutral-light hover:bg-accent/30 text-neutral-dark'
+                    : 'bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10'
                   }
+                  rounded-lg
                 `}
               >
                 <div className="flex items-center gap-3">
@@ -72,7 +67,7 @@ export function CategorySidebar() {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <div className="p-3 bg-neutral-light/50 grid grid-cols-2 gap-3">
+                    <div className="p-3 bg-white/5 grid grid-cols-2 gap-3">
                       {items.map((item) => (
                         <ItemCard key={item.id} item={item} />
                       ))}
@@ -87,4 +82,3 @@ export function CategorySidebar() {
     </div>
   );
 }
-

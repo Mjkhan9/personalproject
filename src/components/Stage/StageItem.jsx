@@ -254,66 +254,77 @@ function FloralArch() {
   return (
     <svg viewBox="0 0 100 130" className="w-full h-full">
       <defs>
-        <linearGradient id="archMetal" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#8B7355" />
-          <stop offset="50%" stopColor="#A08060" />
-          <stop offset="100%" stopColor="#8B7355" />
+        <linearGradient id="archGold" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#B8962E" />
+          <stop offset="30%" stopColor="#D4AF37" />
+          <stop offset="70%" stopColor="#F4E4BA" />
+          <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
-        <filter id="leafShadow">
-          <feDropShadow dx="1" dy="1" stdDeviation="1" floodOpacity="0.2"/>
+        <filter id="archGlow">
+          <feGaussianBlur stdDeviation="1" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
         </filter>
       </defs>
       
-      {/* Metal arch frame (subtle, behind greenery) */}
+      {/* Elegant gold arch frame */}
       <path
         d="M15 128 L15 55 Q15 12, 50 12 Q85 12, 85 55 L85 128"
-        stroke="url(#archMetal)"
-        strokeWidth="3"
+        stroke="url(#archGold)"
+        strokeWidth="2.5"
         fill="none"
-        opacity="0.6"
+        opacity="0.9"
+        filter="url(#archGlow)"
       />
       
-      {/* Lush greenery covering the arch */}
-      <g filter="url(#leafShadow)">
-        {/* Left side greenery */}
-        {[0, 15, 30, 45, 60, 75, 90, 105].map((y, i) => (
-          <g key={`left-${i}`}>
-            <ellipse cx={18 - i * 0.3} cy={25 + y * 0.95} rx={8 + Math.sin(i) * 2} ry={6} fill="#5A7F4B" opacity="0.9" transform={`rotate(${-20 + i * 3}, ${18}, ${25 + y})`} />
-            <ellipse cx={14 - i * 0.2} cy={28 + y * 0.95} rx={6} ry={4} fill="#6B8E5E" opacity="0.8" transform={`rotate(${-30 + i * 2}, ${14}, ${28 + y})`} />
-          </g>
-        ))}
-        
-        {/* Right side greenery */}
-        {[0, 15, 30, 45, 60, 75, 90, 105].map((y, i) => (
-          <g key={`right-${i}`}>
-            <ellipse cx={82 + i * 0.3} cy={25 + y * 0.95} rx={8 + Math.sin(i) * 2} ry={6} fill="#5A7F4B" opacity="0.9" transform={`rotate(${20 - i * 3}, ${82}, ${25 + y})`} />
-            <ellipse cx={86 + i * 0.2} cy={28 + y * 0.95} rx={6} ry={4} fill="#6B8E5E" opacity="0.8" transform={`rotate(${30 - i * 2}, ${86}, ${28 + y})`} />
-          </g>
-        ))}
-        
-        {/* Top arch greenery - most dense */}
-        {[-35, -25, -15, -5, 5, 15, 25, 35].map((offset, i) => (
-          <g key={`top-${i}`}>
-            <ellipse cx={50 + offset} cy={18 - Math.abs(offset) * 0.15} rx={7} ry={10} fill="#5A7F4B" opacity="0.9" />
-            <ellipse cx={50 + offset + 2} cy={22 - Math.abs(offset) * 0.1} rx={5} ry={7} fill="#6B8E5E" opacity="0.8" />
-          </g>
-        ))}
+      {/* Inner highlight line */}
+      <path
+        d="M17 126 L17 56 Q17 14, 50 14 Q83 14, 83 56 L83 126"
+        stroke="#F4E4BA"
+        strokeWidth="1"
+        fill="none"
+        opacity="0.4"
+      />
+      
+      {/* Elegant floral clusters - realistic roses, not green blobs */}
+      {/* Top center cluster */}
+      <g>
+        <circle cx={50} cy={18} r={6} fill="#FEFEFE" opacity="0.95" />
+        <circle cx={50} cy={18} r={4} fill="#FAF8F5" />
+        <circle cx={50} cy={18} r={2.5} fill="#F5F0EA" />
+        <circle cx={48} cy={16} r={4} fill="#FEFEFE" opacity="0.9" />
+        <circle cx={52} cy={16} r={4} fill="#FEFEFE" opacity="0.9" />
       </g>
       
-      {/* Flowers scattered on the arch */}
-      {/* White roses */}
-      {[[25, 30], [75, 30], [35, 45], [65, 45], [50, 15], [20, 60], [80, 60], [30, 80], [70, 80], [25, 100], [75, 100]].map(([x, y], i) => (
-        <g key={`rose-${i}`}>
-          <circle cx={x} cy={y} r={5} fill="#FEFEFE" />
-          <circle cx={x} cy={y} r={3.5} fill="#F8F5F0" />
-          <circle cx={x} cy={y} r={2} fill="#F0EBE3" />
-          <circle cx={x} cy={y} r={0.8} fill="#E8E0D5" />
+      {/* Side clusters - cascading */}
+      {[[22, 35], [78, 35], [18, 55], [82, 55], [20, 75], [80, 75], [22, 95], [78, 95]].map(([x, y], i) => (
+        <g key={`cluster-${i}`}>
+          <circle cx={x} cy={y} r={4.5} fill="#FEFEFE" opacity="0.9" />
+          <circle cx={x} cy={y} r={3} fill="#FAF8F5" />
+          <circle cx={x + 2} cy={y - 1} r={3.5} fill="#FEFEFE" opacity="0.85" />
+          <circle cx={x - 2} cy={y - 1} r={3.5} fill="#FEFEFE" opacity="0.85" />
         </g>
       ))}
       
-      {/* Small accent flowers */}
-      {[[22, 40], [78, 40], [18, 70], [82, 70], [45, 20], [55, 20], [15, 90], [85, 90]].map(([x, y], i) => (
-        <circle key={`accent-${i}`} cx={x} cy={y} r={3} fill="#F5E6E0" opacity="0.9" />
+      {/* Subtle greenery accents - small, elegant leaves */}
+      {[[16, 50], [84, 50], [17, 70], [83, 70], [19, 90], [81, 90]].map(([x, y], i) => (
+        <ellipse 
+          key={`leaf-${i}`} 
+          cx={x} 
+          cy={y} 
+          rx={2} 
+          ry={4} 
+          fill="#4A6F3B" 
+          opacity="0.3"
+          transform={`rotate(${i * 30}, ${x}, ${y})`}
+        />
+      ))}
+      
+      {/* Baby's breath accents */}
+      {[[25, 25], [75, 25], [30, 45], [70, 45], [25, 65], [75, 65], [28, 85], [72, 85]].map(([x, y], i) => (
+        <circle key={`breath-${i}`} cx={x} cy={y} r={1.5} fill="#FFFFFF" opacity="0.6" />
       ))}
     </svg>
   );
@@ -323,60 +334,87 @@ function TripleFloralArch() {
   return (
     <svg viewBox="0 0 160 110" className="w-full h-full">
       <defs>
-        <linearGradient id="archMetalTriple" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#6B5B4F" />
-          <stop offset="50%" stopColor="#8B7355" />
-          <stop offset="100%" stopColor="#6B5B4F" />
+        <linearGradient id="archGoldTriple" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#B8962E" />
+          <stop offset="30%" stopColor="#D4AF37" />
+          <stop offset="70%" stopColor="#F4E4BA" />
+          <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
+        <filter id="tripleGlow">
+          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
       
-      {/* Three arch frames */}
-      <path d="M10 108 L10 45 Q10 8, 80 8 Q150 8, 150 45 L150 108" stroke="url(#archMetalTriple)" strokeWidth="2" fill="none" opacity="0.4" />
-      <path d="M25 108 L25 48 Q25 15, 80 15 Q135 15, 135 48 L135 108" stroke="url(#archMetalTriple)" strokeWidth="2.5" fill="none" opacity="0.5" />
-      <path d="M40 108 L40 50 Q40 22, 80 22 Q120 22, 120 50 L120 108" stroke="url(#archMetalTriple)" strokeWidth="3" fill="none" opacity="0.6" />
+      {/* Three elegant gold arch frames */}
+      <path d="M10 108 L10 45 Q10 8, 80 8 Q150 8, 150 45 L150 108" stroke="url(#archGoldTriple)" strokeWidth="2" fill="none" opacity="0.7" filter="url(#tripleGlow)" />
+      <path d="M25 108 L25 48 Q25 15, 80 15 Q135 15, 135 48 L135 108" stroke="url(#archGoldTriple)" strokeWidth="2.5" fill="none" opacity="0.8" filter="url(#tripleGlow)" />
+      <path d="M40 108 L40 50 Q40 22, 80 22 Q120 22, 120 50 L120 108" stroke="url(#archGoldTriple)" strokeWidth="3" fill="none" opacity="0.9" filter="url(#tripleGlow)" />
       
-      {/* Greenery on all three arches */}
-      {/* Outer arch greenery */}
-      {[0, 20, 40, 60, 80].map((y, i) => (
-        <g key={`outer-${i}`}>
-          <ellipse cx={12} cy={20 + y} rx={10} ry={7} fill="#4A6F3B" opacity="0.7" transform={`rotate(-15, 12, ${20 + y})`} />
-          <ellipse cx={148} cy={20 + y} rx={10} ry={7} fill="#4A6F3B" opacity="0.7" transform={`rotate(15, 148, ${20 + y})`} />
+      {/* Elegant floral clusters - no green blobs */}
+      {/* Top center cluster */}
+      <g>
+        <circle cx={80} cy={12} r={7} fill="#FEFEFE" opacity="0.95" />
+        <circle cx={80} cy={12} r={5} fill="#FAF8F5" />
+        <circle cx={80} cy={12} r={3} fill="#F5F0EA" />
+        <circle cx={77} cy={10} r={5} fill="#FEFEFE" opacity="0.9" />
+        <circle cx={83} cy={10} r={5} fill="#FEFEFE" opacity="0.9" />
+      </g>
+      
+      {/* Side clusters on outer arch */}
+      {[[15, 30], [145, 30], [12, 50], [148, 50], [15, 70], [145, 70], [18, 90], [142, 90]].map(([x, y], i) => (
+        <g key={`outer-cluster-${i}`}>
+          <circle cx={x} cy={y} r={5} fill="#FEFEFE" opacity="0.9" />
+          <circle cx={x} cy={y} r={3.5} fill="#FAF8F5" />
+          <circle cx={x + 2} cy={y - 1} r={4} fill="#FEFEFE" opacity="0.85" />
         </g>
       ))}
       
-      {/* Middle arch greenery */}
-      {[0, 18, 36, 54, 72].map((y, i) => (
-        <g key={`mid-${i}`}>
-          <ellipse cx={27} cy={25 + y} rx={9} ry={6} fill="#5A7F4B" opacity="0.8" transform={`rotate(-10, 27, ${25 + y})`} />
-          <ellipse cx={133} cy={25 + y} rx={9} ry={6} fill="#5A7F4B" opacity="0.8" transform={`rotate(10, 133, ${25 + y})`} />
+      {/* Middle arch clusters */}
+      {[[30, 35], [130, 35], [28, 55], [132, 55], [30, 75], [130, 75]].map(([x, y], i) => (
+        <g key={`mid-cluster-${i}`}>
+          <circle cx={x} cy={y} r={4.5} fill="#FEFEFE" opacity="0.9" />
+          <circle cx={x} cy={y} r={3} fill="#FAF8F5" />
+          <circle cx={x + 1.5} cy={y - 1} r={3.5} fill="#FEFEFE" opacity="0.85" />
         </g>
       ))}
       
-      {/* Inner arch greenery - most prominent */}
-      {[0, 15, 30, 45, 60, 75].map((y, i) => (
-        <g key={`inner-${i}`}>
-          <ellipse cx={42} cy={28 + y} rx={8} ry={6} fill="#6B8E5E" opacity="0.9" transform={`rotate(-8, 42, ${28 + y})`} />
-          <ellipse cx={118} cy={28 + y} rx={8} ry={6} fill="#6B8E5E" opacity="0.9" transform={`rotate(8, 118, ${28 + y})`} />
+      {/* Inner arch clusters */}
+      {[[45, 40], [115, 40], [42, 60], [118, 60], [45, 80], [115, 80]].map(([x, y], i) => (
+        <g key={`inner-cluster-${i}`}>
+          <circle cx={x} cy={y} r={4} fill="#FEFEFE" opacity="0.95" />
+          <circle cx={x} cy={y} r={2.5} fill="#FAF8F5" />
         </g>
       ))}
       
-      {/* Top greenery clusters */}
-      {[-50, -35, -20, 0, 20, 35, 50].map((offset, i) => (
-        <ellipse key={`top-${i}`} cx={80 + offset} cy={12 + Math.abs(offset) * 0.2} rx={12} ry={8} fill="#5A7F4B" opacity="0.85" />
-      ))}
-      
-      {/* Cascading flowers */}
-      {[[15, 25], [145, 25], [30, 40], [130, 40], [45, 55], [115, 55], [80, 15], [65, 18], [95, 18], [50, 70], [110, 70], [35, 85], [125, 85]].map(([x, y], i) => (
-        <g key={`flower-${i}`}>
-          <circle cx={x} cy={y} r={4.5} fill="#FEFEFE" />
-          <circle cx={x} cy={y} r={3} fill="#F8F5F0" />
-          <circle cx={x} cy={y} r={1.5} fill="#F0E8E0" />
+      {/* Blush accent roses */}
+      {[[20, 45], [140, 45], [55, 25], [105, 25], [35, 65], [125, 65], [40, 85], [120, 85]].map(([x, y], i) => (
+        <g key={`blush-${i}`}>
+          <circle cx={x} cy={y} r={3.5} fill="#F5E0DD" opacity="0.9" />
+          <circle cx={x} cy={y} r={2.5} fill="#F0D5D0" />
         </g>
       ))}
       
-      {/* Blush accent flowers */}
-      {[[20, 50], [140, 50], [55, 30], [105, 30], [80, 8], [40, 95], [120, 95]].map(([x, y], i) => (
-        <circle key={`blush-${i}`} cx={x} cy={y} r={3.5} fill="#F0D5D0" opacity="0.9" />
+      {/* Subtle greenery accents - tiny elegant leaves */}
+      {[[18, 55], [142, 55], [32, 70], [128, 70], [38, 88], [122, 88]].map(([x, y], i) => (
+        <ellipse 
+          key={`leaf-${i}`} 
+          cx={x} 
+          cy={y} 
+          rx={1.5} 
+          ry={3} 
+          fill="#4A6F3B" 
+          opacity="0.25"
+          transform={`rotate(${i * 25}, ${x}, ${y})`}
+        />
+      ))}
+      
+      {/* Baby's breath */}
+      {[[25, 20], [135, 20], [22, 40], [138, 40], [28, 60], [132, 60], [30, 80], [130, 80]].map(([x, y], i) => (
+        <circle key={`breath-${i}`} cx={x} cy={y} r={1.2} fill="#FFFFFF" opacity="0.5" />
       ))}
     </svg>
   );

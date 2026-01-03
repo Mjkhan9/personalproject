@@ -33,16 +33,16 @@ export function ItemCard({ item }) {
       whileHover={{ y: -2 }}
       onClick={handleToggle}
       className={`
-        relative group cursor-pointer rounded-xl overflow-hidden
+        relative group cursor-pointer rounded-lg overflow-hidden
         transition-all duration-300
         ${isSelected 
-          ? 'bg-primary/10 border-2 border-primary shadow-lg shadow-primary/20' 
-          : 'bg-white border-2 border-transparent hover:border-primary/30 shadow-md hover:shadow-lg'
+          ? 'bg-primary/20 border-2 border-primary shadow-lg shadow-primary/30' 
+          : 'bg-white/5 border-2 border-white/10 hover:border-primary/40 shadow-md hover:shadow-lg backdrop-blur-sm'
         }
       `}
     >
       {/* Item Preview */}
-      <div className="relative h-28 bg-gradient-to-br from-neutral-light to-accent/20 overflow-hidden">
+      <div className="relative h-28 bg-gradient-to-br from-white/5 to-white/10 overflow-hidden">
         {/* SVG Preview of the item */}
         <div className="absolute inset-0 flex items-center justify-center p-4">
           <ItemThumbnail item={item} />
@@ -53,12 +53,12 @@ export function ItemCard({ item }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-primary/20 flex items-center justify-center"
+            className="absolute inset-0 bg-primary/30 flex items-center justify-center"
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
+              className="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-lg"
             >
               <Check className="w-5 h-5 text-neutral-dark" />
             </motion.div>
@@ -68,10 +68,10 @@ export function ItemCard({ item }) {
 
       {/* Item Details */}
       <div className="p-3">
-        <h4 className="font-medium text-sm text-neutral-dark truncate mb-1">
+        <h4 className="font-medium text-sm text-white truncate mb-1">
           {item.name}
         </h4>
-        <p className="text-xs text-text-muted line-clamp-2 h-8 mb-2">
+        <p className="text-xs text-white/50 line-clamp-2 h-8 mb-2">
           {item.description}
         </p>
         
@@ -87,11 +87,11 @@ export function ItemCard({ item }) {
             >
               <button
                 onClick={handleDecrement}
-                className="w-6 h-6 rounded-full bg-neutral-dark/10 hover:bg-neutral-dark/20 flex items-center justify-center transition-colors"
+                className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors text-white"
               >
                 <Minus className="w-3 h-3" />
               </button>
-              <span className="w-6 text-center text-sm font-medium">{quantity}</span>
+              <span className="w-6 text-center text-sm font-medium text-white">{quantity}</span>
               <button
                 onClick={handleIncrement}
                 disabled={quantity >= item.maxQuantity}
@@ -108,7 +108,7 @@ export function ItemCard({ item }) {
                 w-7 h-7 rounded-full flex items-center justify-center transition-colors
                 ${isSelected 
                   ? 'bg-primary text-neutral-dark' 
-                  : 'bg-neutral-dark/10 text-neutral-dark group-hover:bg-primary group-hover:text-neutral-dark'
+                  : 'bg-white/10 text-white group-hover:bg-primary group-hover:text-neutral-dark'
                 }
               `}
             >

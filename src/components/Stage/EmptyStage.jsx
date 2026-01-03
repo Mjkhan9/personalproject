@@ -10,63 +10,61 @@ export function EmptyStage() {
     >
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Corner accents */}
-        <svg className="absolute top-4 left-4 w-16 h-16 text-primary/20" viewBox="0 0 100 100">
-          <path d="M0 50 L0 0 L50 0" stroke="currentColor" strokeWidth="2" fill="none" />
+        {/* Subtle corner accents */}
+        <svg className="absolute top-8 left-8 w-12 h-12 text-primary/10" viewBox="0 0 100 100">
+          <path d="M0 50 L0 0 L50 0" stroke="currentColor" strokeWidth="1.5" fill="none" />
         </svg>
-        <svg className="absolute top-4 right-4 w-16 h-16 text-primary/20" viewBox="0 0 100 100">
-          <path d="M50 0 L100 0 L100 50" stroke="currentColor" strokeWidth="2" fill="none" />
+        <svg className="absolute top-8 right-8 w-12 h-12 text-primary/10" viewBox="0 0 100 100">
+          <path d="M50 0 L100 0 L100 50" stroke="currentColor" strokeWidth="1.5" fill="none" />
         </svg>
-        <svg className="absolute bottom-4 left-4 w-16 h-16 text-primary/20" viewBox="0 0 100 100">
-          <path d="M0 50 L0 100 L50 100" stroke="currentColor" strokeWidth="2" fill="none" />
+        <svg className="absolute bottom-8 left-8 w-12 h-12 text-primary/10" viewBox="0 0 100 100">
+          <path d="M0 50 L0 100 L50 100" stroke="currentColor" strokeWidth="1.5" fill="none" />
         </svg>
-        <svg className="absolute bottom-4 right-4 w-16 h-16 text-primary/20" viewBox="0 0 100 100">
-          <path d="M50 100 L100 100 L100 50" stroke="currentColor" strokeWidth="2" fill="none" />
+        <svg className="absolute bottom-8 right-8 w-12 h-12 text-primary/10" viewBox="0 0 100 100">
+          <path d="M50 100 L100 100 L100 50" stroke="currentColor" strokeWidth="1.5" fill="none" />
         </svg>
       </div>
 
       {/* Content */}
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2 }}
         className="relative z-10"
       >
         <motion.div
           animate={{ 
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0]
+            scale: [1, 1.08, 1],
           }}
           transition={{ 
-            duration: 3, 
+            duration: 4, 
             repeat: Infinity,
-            repeatType: 'reverse'
+            ease: "easeInOut"
           }}
-          className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center"
+          className="w-24 h-24 mx-auto mb-8 rounded-full bg-primary/10 backdrop-blur-sm border border-primary/20 flex items-center justify-center"
         >
-          <Sparkles className="w-10 h-10 text-primary" />
+          <Sparkles className="w-12 h-12 text-primary" />
         </motion.div>
 
-        <h3 className="text-2xl font-serif font-semibold text-primary-light mb-3">
+        <h3 className="text-3xl font-serif font-semibold text-primary mb-4">
           Your Stage Awaits
         </h3>
-        <p className="text-white/60 max-w-xs mx-auto mb-6 text-sm">
-          Browse the categories on the left and click items to see them appear here in real-time
+        <p className="text-white/50 max-w-sm mx-auto mb-8 text-base leading-relaxed">
+          Browse decor items and click to see them appear here in real-time. Build your dream wedding setup.
         </p>
 
         <motion.div
-          animate={{ y: [0, -5, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="flex items-center justify-center gap-2 text-primary/80"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex items-center justify-center gap-2 text-primary/70"
         >
           <MousePointerClick className="w-5 h-5" />
-          <span className="text-sm">Click items to add</span>
+          <span className="text-sm font-medium">Click items to add</span>
         </motion.div>
       </motion.div>
 
-      {/* Stage outline hint */}
-      <div className="absolute bottom-[15%] left-[15%] right-[15%] h-[40%] border-2 border-dashed border-primary/20 rounded-lg" />
+      {/* Subtle stage outline hint */}
+      <div className="absolute bottom-[18%] left-[10%] right-[10%] h-[35%] border border-dashed border-primary/15 rounded-lg" />
     </motion.div>
   );
 }
-

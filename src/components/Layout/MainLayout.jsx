@@ -3,7 +3,7 @@ import { Footer } from './Footer';
 
 export function MainLayout({ children }) {
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-light">
+    <div className="min-h-screen flex flex-col bg-neutral-dark">
       <Header />
       <main className="flex-1">
         {children}
@@ -12,4 +12,3 @@ export function MainLayout({ children }) {
     </div>
   );
 }
-

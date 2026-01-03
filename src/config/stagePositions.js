@@ -75,7 +75,7 @@ export const ITEM_POSITIONS = {
   // SEATING - Center of stage
   // ==========================================
   'sofa-cream-tufted': { 
-    x: 50, y: 68, width: 30, height: 14,
+    x: 50, y: 68, width: 28, height: 13,
     zIndex: Z_LAYERS.seating 
   },
   'sofa-velvet-blush': { 
@@ -85,8 +85,8 @@ export const ITEM_POSITIONS = {
   'chairs-accent-pair': {
     isMultiple: true,
     positions: [
-      { x: 35, y: 68, width: 10, height: 12, zIndex: Z_LAYERS.seating },
-      { x: 65, y: 68, width: 10, height: 12, zIndex: Z_LAYERS.seating },
+      { x: 38, y: 68, width: 9, height: 11, zIndex: Z_LAYERS.seating },
+      { x: 62, y: 68, width: 9, height: 11, zIndex: Z_LAYERS.seating },
     ]
   },
   'cushions-floor-set': { 
@@ -100,8 +100,8 @@ export const ITEM_POSITIONS = {
   'floral-sofa-wrap': {
     isMultiple: true,
     positions: [
-      { x: 32, y: 65, width: 14, height: 14, zIndex: Z_LAYERS.sofaFlorals },
-      { x: 68, y: 65, width: 14, height: 14, zIndex: Z_LAYERS.sofaFlorals },
+      { x: 34, y: 65, width: 12, height: 12, zIndex: Z_LAYERS.sofaFlorals },
+      { x: 66, y: 65, width: 12, height: 12, zIndex: Z_LAYERS.sofaFlorals },
     ]
   },
 

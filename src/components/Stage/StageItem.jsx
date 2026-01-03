@@ -425,31 +425,50 @@ function HexagonArch() {
     <svg viewBox="0 0 100 120" className="w-full h-full">
       <defs>
         <linearGradient id="hexGold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#D4AF37" />
+          <stop offset="0%" stopColor="#B8962E" />
+          <stop offset="30%" stopColor="#D4AF37" />
+          <stop offset="70%" stopColor="#F4E4BA" />
           <stop offset="100%" stopColor="#B8962E" />
         </linearGradient>
+        <filter id="hexGlow">
+          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
       </defs>
       
-      {/* Hexagon frame */}
+      {/* Hexagon frame - elegant gold */}
       <polygon
         points="50,8 88,28 88,78 50,98 12,78 12,28"
         stroke="url(#hexGold)"
-        strokeWidth="4"
+        strokeWidth="3.5"
         fill="none"
         strokeLinejoin="round"
+        filter="url(#hexGlow)"
+        opacity="0.9"
       />
       
-      {/* Greenery on frame */}
+      {/* Elegant floral clusters at corners - NO green blobs */}
       {[[12, 28], [12, 53], [12, 78], [50, 8], [88, 28], [88, 53], [88, 78], [50, 98]].map(([x, y], i) => (
         <g key={i}>
-          <ellipse cx={x} cy={y} rx={8} ry={5} fill="#6B8E5E" opacity="0.8" transform={`rotate(${i * 45}, ${x}, ${y})`} />
-          <circle cx={x + (x < 50 ? 3 : -3)} cy={y} r={3} fill="#FEFEFE" />
+          <circle cx={x} cy={y} r={4} fill="#FEFEFE" opacity="0.9" />
+          <circle cx={x} cy={y} r={2.5} fill="#FAF8F5" />
+          {i % 2 === 0 && (
+            <circle cx={x + (x < 50 ? 2 : -2)} cy={y} r={3} fill="#FEFEFE" opacity="0.85" />
+          )}
         </g>
       ))}
       
-      {/* Corner florals */}
-      <circle cx={50} cy={8} r={5} fill="#FEFEFE" />
-      <circle cx={50} cy={98} r={4} fill="#F5E6E0" />
+      {/* Top center floral */}
+      <g>
+        <circle cx={50} cy={8} r={5} fill="#FEFEFE" opacity="0.95" />
+        <circle cx={50} cy={8} r={3.5} fill="#FAF8F5" />
+      </g>
+      
+      {/* Bottom center accent */}
+      <circle cx={50} cy={98} r={3.5} fill="#F5E6E0" opacity="0.9" />
     </svg>
   );
 }
@@ -468,11 +487,15 @@ function RectangleArch() {
       {/* Rectangle frame */}
       <rect x="10" y="8" width="80" height="100" stroke="url(#rectGold)" strokeWidth="4" fill="none" rx="2" />
       
-      {/* Greenery along frame */}
+      {/* Elegant floral clusters along frame - NO green blobs */}
       {[0, 20, 40, 60, 80].map((y, i) => (
         <g key={i}>
-          <ellipse cx={12} cy={15 + y} rx={7} ry={5} fill="#6B8E5E" opacity="0.8" transform={`rotate(-10, 12, ${15 + y})`} />
-          <ellipse cx={88} cy={15 + y} rx={7} ry={5} fill="#6B8E5E" opacity="0.8" transform={`rotate(10, 88, ${15 + y})`} />
+          {/* Left side florals */}
+          <circle cx={12} cy={15 + y} r={4} fill="#FEFEFE" opacity="0.9" />
+          <circle cx={12} cy={15 + y} r={2.5} fill="#FAF8F5" />
+          {/* Right side florals */}
+          <circle cx={88} cy={15 + y} r={4} fill="#FEFEFE" opacity="0.9" />
+          <circle cx={88} cy={15 + y} r={2.5} fill="#FAF8F5" />
         </g>
       ))}
       
@@ -495,7 +518,7 @@ function LuxuryTuftedSofa({ color = '#F5F0E6' }) {
   const isDark = color === '#E8D5D5';
   
   return (
-    <svg viewBox="0 0 140 60" className="w-full h-full">
+    <svg viewBox="0 0 148 60" className="w-full h-full">
       <defs>
         <linearGradient id="sofaCushion" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor={color} />
@@ -515,7 +538,7 @@ function LuxuryTuftedSofa({ color = '#F5F0E6' }) {
       </defs>
       
       {/* Sofa shadow */}
-      <ellipse cx="70" cy="58" rx="60" ry="4" fill="rgba(0,0,0,0.15)" />
+      <ellipse cx="74" cy="58" rx="60" ry="4" fill="rgba(0,0,0,0.15)" />
       
       {/* Back rest - tall and tufted */}
       <rect x="12" y="5" width="116" height="28" rx="6" fill="url(#sofaCushion)" filter="url(#sofaShadow)" />
@@ -541,7 +564,7 @@ function LuxuryTuftedSofa({ color = '#F5F0E6' }) {
       <line x1="52" y1="33" x2="52" y2="45" stroke="rgba(0,0,0,0.05)" strokeWidth="1.5" />
       <line x1="88" y1="33" x2="88" y2="45" stroke="rgba(0,0,0,0.05)" strokeWidth="1.5" />
       
-      {/* Rounded arms */}
+      {/* Rounded arms - fixed to fit within viewBox */}
       <path d="M4 12 Q4 8, 12 8 L12 42 Q4 42, 4 36 Z" fill={color} />
       <path d="M136 8 Q144 8, 144 12 L144 36 Q144 42, 136 42 Z" fill={color} />
       
@@ -552,12 +575,12 @@ function LuxuryTuftedSofa({ color = '#F5F0E6' }) {
       {/* Gold legs */}
       <ellipse cx="25" cy="52" rx="4" ry="2.5" fill="#D4AF37" />
       <rect x="23" y="50" width="4" height="6" fill="#D4AF37" />
-      <ellipse cx="115" cy="52" rx="4" ry="2.5" fill="#D4AF37" />
-      <rect x="113" y="50" width="4" height="6" fill="#D4AF37" />
+      <ellipse cx="123" cy="52" rx="4" ry="2.5" fill="#D4AF37" />
+      <rect x="121" y="50" width="4" height="6" fill="#D4AF37" />
       
       {/* Leg highlights */}
       <ellipse cx="24" cy="51" rx="1.5" ry="1" fill="#F4E4BA" opacity="0.6" />
-      <ellipse cx="114" cy="51" rx="1.5" ry="1" fill="#F4E4BA" opacity="0.6" />
+      <ellipse cx="122" cy="51" rx="1.5" ry="1" fill="#F4E4BA" opacity="0.6" />
     </svg>
   );
 }
@@ -636,22 +659,7 @@ function LushArchFlorals() {
         </filter>
       </defs>
       
-      {/* Dense greenery base layer */}
-      <ellipse cx="90" cy="55" rx="80" ry="22" fill="#4A6F3B" opacity="0.6" />
-      <ellipse cx="90" cy="50" rx="70" ry="18" fill="#5A7F4B" opacity="0.7" />
-      
-      {/* Cascading greenery on sides */}
-      {[-75, -60, -45, 45, 60, 75].map((offset, i) => (
-        <ellipse 
-          key={i}
-          cx={90 + offset} 
-          cy={50 + Math.abs(offset) * 0.3} 
-          rx={15} 
-          ry={25 + Math.abs(offset) * 0.2} 
-          fill="#6B8E5E" 
-          opacity="0.6"
-        />
-      ))}
+      {/* NO green blobs - just elegant florals */}
       
       {/* Large white roses - main focal points */}
       <g filter="url(#floralDepth)">
@@ -709,14 +717,7 @@ function SofaFloralWrap({ side }) {
         </filter>
       </defs>
       
-      {/* Dense greenery base */}
-      <ellipse cx="35" cy="40" rx="32" ry="22" fill="#4A6F3B" opacity="0.6" />
-      <ellipse cx="30" cy="35" rx="28" ry="18" fill="#5A7F4B" opacity="0.7" />
-      <ellipse cx="25" cy="45" rx="22" ry="16" fill="#6B8E5E" opacity="0.6" />
-      
-      {/* Cascading effect */}
-      <ellipse cx="15" cy="50" rx={15} ry={12} fill="#6B8E5E" opacity="0.5" />
-      <ellipse cx="55" cy="55" rx={12} ry={10} fill="#5A7F4B" opacity="0.5" />
+      {/* NO green blobs - just elegant florals */}
       
       {/* Large roses */}
       <g filter="url(#wrapShadow)">
@@ -765,10 +766,7 @@ function AisleFloralBox({ index }) {
       <rect x="5" y="22" width="35" height="26" fill="rgba(255,255,255,0.2)" stroke="#D4AF37" strokeWidth="0.8" rx="2" />
       <rect x="7" y="24" width="31" height="2" fill="rgba(255,255,255,0.3)" />
       
-      {/* Greenery */}
-      <ellipse cx="22" cy="28" rx="16" ry="10" fill="#6B8E5E" opacity="0.6" />
-      
-      {/* Roses overflowing */}
+      {/* Roses overflowing - NO green blobs */}
       <g>
         <circle cx="22" cy="12" r={8} fill="#FEFEFE" />
         <circle cx="22" cy="12} r={5.5" fill="#FAF8F5" />
@@ -802,9 +800,7 @@ function TallCenterpiece({ side }) {
       {/* Vase highlight */}
       <path d="M21 50 L20 70" stroke="#F4E4BA" strokeWidth="2" opacity="0.4" />
       
-      {/* Abundant florals on top */}
-      <ellipse cx="25" cy="28" rx="20" ry="12" fill="#5A7F4B" opacity="0.6" />
-      
+      {/* Abundant florals on top - NO green blobs */}
       {/* Large roses */}
       <g>
         <circle cx="25" cy="15" r={9} fill="#FEFEFE" />
@@ -822,10 +818,6 @@ function TallCenterpiece({ side }) {
         
         <circle cx="25" cy="30" r={5} fill="#FEFEFE" />
       </g>
-      
-      {/* Cascading greenery */}
-      <ellipse cx="8" cy="32" rx={6} ry={12} fill="#6B8E5E" opacity="0.5" />
-      <ellipse cx="42" cy="30" rx={6} ry={12} fill="#6B8E5E" opacity="0.5" />
     </svg>
   );
 }

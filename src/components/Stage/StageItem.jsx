@@ -771,7 +771,7 @@ function ElegantAccentChair({ side }) {
       
       {/* Seat */}
       <ellipse cx="27" cy="42" rx="24" ry="9" fill="#F5F0E6" />
-      <ellipse cx="27" cy="40" rx="20} ry="6" fill="rgba(255,255,255,0.4)" />
+      <ellipse cx="27" cy="40" rx="20" ry="6" fill="rgba(255,255,255,0.4)" />
       
       {/* Arm */}
       <path d="M1 13 Q-1 13, -1 18 L-1 44 Q-1 47, 4 47 L6 36 L6 13 Z" fill="#F5F0E6" />

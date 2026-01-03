@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Grid3X3, ShoppingBag, X } from 'lucide-react';
+import { Grid3X3, ShoppingBag, X, Sparkles } from 'lucide-react';
 import { MainLayout } from './components/Layout/MainLayout';
 import { CategorySidebar } from './components/Categories/CategorySidebar';
 import { MobileCategories } from './components/Categories/MobileCategories';
 import { StagePreview } from './components/Stage/StagePreview';
 import { QuoteSummary } from './components/Quote/QuoteSummary';
 import { MobileQuoteDrawer } from './components/Quote/MobileQuoteDrawer';
+import { InspirationGallery } from './components/Gallery/InspirationGallery';
 import { useTotalItemCount, useSubtotal } from './store/quoteStore';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
   const [isMobileQuoteOpen, setIsMobileQuoteOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const [isDesktopQuoteOpen, setIsDesktopQuoteOpen] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   
   const totalItems = useTotalItemCount();
   const subtotal = useSubtotal();
@@ -82,6 +84,17 @@ function App() {
 
         {/* Floating Action Buttons - Bottom Center */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+          {/* Inspiration Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsGalleryOpen(true)}
+            className="flex items-center gap-2 px-5 py-3 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full font-medium shadow-lg hover:bg-white/20 transition-all"
+          >
+            <Sparkles className="w-5 h-5 text-primary" />
+            <span>Inspiration</span>
+          </motion.button>
+
           {/* Browse Button */}
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -123,6 +136,15 @@ function App() {
 
         {/* Mobile Bottom Bar */}
         <div className="p-3 bg-neutral-dark border-t border-primary/20 flex gap-2">
+          {/* Inspiration Button */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsGalleryOpen(true)}
+            className="p-3 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-xl"
+          >
+            <Sparkles className="w-5 h-5 text-primary" />
+          </motion.button>
+
           {/* Browse Button */}
           <motion.button
             whileTap={{ scale: 0.95 }}
@@ -130,7 +152,7 @@ function App() {
             className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary text-neutral-dark rounded-xl font-medium"
           >
             <Grid3X3 className="w-5 h-5" />
-            Browse Decor
+            Browse
           </motion.button>
 
           {/* Quote Button */}
@@ -162,6 +184,12 @@ function App() {
       <MobileQuoteDrawer 
         isOpen={isMobileQuoteOpen} 
         onClose={() => setIsMobileQuoteOpen(false)} 
+      />
+      
+      {/* Inspiration Gallery */}
+      <InspirationGallery
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
       />
     </MainLayout>
   );
